@@ -1,0 +1,48 @@
+﻿@model WebPhongKham.Models.Entity.User
+
+@{
+    ViewData["Title"] = "Create user page";
+}
+
+<div class="container-fluid px-1 py-5 mx-auto">
+    <div class="row d-flex justify-content-center">
+        <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
+            <div class="card">
+                <h5 class="text-center mb-4">Create a new user</h5>
+                <form class="form-card" asp-controller="Home" asp-action="Edit" asp-route-id="@Model.Id" method="post">
+                    <div class="row justify-content-between text-left">
+                        <div class="form-group col-sm-6 flex-column d-flex">
+                            <label class="form-control-label px-3">Full name<span class="text-danger"> *</span></label>
+                            <input type="text" id="fname" asp-for="FullName" placeholder="Enter your first name" onblur="validate(1)">
+                        </div>
+                    </div>
+                    <div class="row justify-content-between text-left">
+                        <div class="form-group col-sm-6 flex-column d-flex">
+                            <label class="form-control-label px-3">Email<span class="text-danger"> *</span></label>
+                            <input type="text" id="email" asp-for="Email" placeholder="" onblur="validate(3)">
+                        </div>
+                        <div class="form-group col-sm-6 flex-column d-flex">
+                            <label class="form-control-label px-3">Phone number<span class="text-danger"> *</span></label>
+                            <input type="text" id="phone" asp-for="PhoneNumber" placeholder="" onblur="validate(4)">
+                        </div>
+                    </div>
+                    <div class="row justify-content-between text-left">
+                        <div class="form-group col-sm-6 flex-column d-flex">
+                            <label class="form-control-label px-3">Address</label>
+                            <input type="text" id="address" asp-for="Address" placeholder="Enter your address" onblur="validate(2)">
+                        </div>
+                        <div class="form-group col-sm-6 flex-column d-flex">
+                            <label class="form-control-label px-3">Role</label>
+                            <select name="role" asp-items="@ViewBag.ListRoles" class="form-control">
+                                    <option>--Chọn role--</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row justify-content-end">
+                        <div class="form-group col-sm-6"> <button type="submit" class="btn-block btn-primary">Save user</button> </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
