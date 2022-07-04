@@ -83,3 +83,8 @@ function validate(val) {
 
     return flag;
 }
+
+$("#deletable").change(function () {
+    cb = $(this);
+    cb.val(cb.prop('checked'));
+});
