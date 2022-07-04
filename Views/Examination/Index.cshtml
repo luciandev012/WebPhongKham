@@ -2,14 +2,14 @@
 @{
     ViewData["Title"] = "Health Type Page";
 }
-@model List<HealthType>
+@model List<ExaminationObject>
 
 
 <article class="content dashboard-page">
     <section class="section">
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-            Thêm loại sức khỏe
+            Thêm đối tượng
         </button>
 
         <!-- Modal -->
@@ -17,14 +17,14 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Thêm loại sức khỏe</h5>
+                        <h5 class="modal-title" id="staticBackdropLabel">Thêm đối tượng</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form asp-controller="HealthType" asp-action="Create" method="post">
+                        <form asp-controller="Examination" asp-action="Create" method="post">
                             <div class="row">
                                 <div class="form-group mt-3">
-                                    <label for="name" class="form-label">Loại sức khỏe</label>
+                                    <label for="name" class="form-label">Loại đối tượng</label>
                                     <input id="name" name="name" type="text" required class="form-control" />
 
                                 </div>
@@ -44,7 +44,7 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th scope="col">Tên loại sức khỏe</th>
+                    <th scope="col">Tên đối tượng</th>
                     <th scope="col">Thao tác</th>
                 </tr>
             </thead>
@@ -56,7 +56,7 @@
                         @if (!item.Deletable)
                         {
                             <td class="fit">
-                                <a asp-controller="HealthType" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+                                <a asp-controller="Examination" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
                             </td>
                         }
                         else

@@ -8,6 +8,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.Configure<MedicalDatabaseSettings>(builder.Configuration.GetSection("MedicalDatabase"));
 builder.Services.AddSingleton<UserServices>();
 builder.Services.AddSingleton<HealthTypeServices>();
+builder.Services.AddSingleton<ExaminationObjectServices>();
 
 var app = builder.Build();
 
