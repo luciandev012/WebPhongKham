@@ -27,7 +27,12 @@ namespace WebPhongKham.Services
             var filter = Builders<Patient>.Filter.Eq("_id", ObjectId.Parse(id));
             var update = Builders<Patient>.Update.Set(s => s.FullName, newPatient.FullName)
                                               .Set(s => s.IdentityCode, newPatient.IdentityCode)
-                                              .Set(s => s.DoB, newPatient.DoB);
+                                              .Set(s => s.DoB, newPatient.DoB)
+                                              .Set(s => s.DoE, newPatient.DoE)
+                                              .Set(s => s.ExamObject, newPatient.ExamObject)
+                                              .Set(s => s.HealthType, newPatient.HealthType)
+                                              .Set(s => s.IsTest, newPatient.IsTest)
+                                              .Set(s => s.IsXray, newPatient.IsXray);
             await _patientCollection.UpdateOneAsync(filter, update);
         }
 

@@ -40,6 +40,8 @@ namespace WebPhongKham.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Patient patient)
         {
+            patient.DoB = DateTime.SpecifyKind(patient.DoB, DateTimeKind.Utc);
+            patient.DoE = DateTime.SpecifyKind(patient.DoE, DateTimeKind.Utc);
             await _patientServices.CreateAsync(patient);
             return RedirectToAction("Index");
         }
@@ -62,8 +64,8 @@ namespace WebPhongKham.Controllers
                 id = patient.Id,
                 fullName = patient.FullName,
                 identityCode = patient.IdentityCode,
-                doB = patient.DoB.ToString("dd/MM/yyyy"),
-                doE = patient.DoE.ToString("dd/MM/yyyy"),
+                doB = patient.DoB.ToString("yyyy-MM-dd"),
+                doE = patient.DoE.ToString("yyyy-MM-dd"),
                 examObject = patient.ExamObject,
                 healthType = patient.HealthType,
                 isPaid = patient.IsPaid,
@@ -73,6 +75,14 @@ namespace WebPhongKham.Controllers
             return Json(result);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, Patient patient)
+        {
+            patient.DoB = DateTime.SpecifyKind(patient.DoB, DateTimeKind.Utc);
+            patient.DoE = DateTime.SpecifyKind(patient.DoE, DateTimeKind.Utc);
+            await _patientServices.UpdateAsync(id, patient);
+            return RedirectToAction("Index");
+        }
         public async Task<IActionResult> Delete(string id)
         {
             await _patientServices.DeleteAsync(id);

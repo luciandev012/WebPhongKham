@@ -56,7 +56,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="doe" class="form-label">Ngày khám</label>
-                                    <input id="doe" name="doe" type="date" data-date="" data-date-format="DD/MM/YYYY" value="@DateTime.Now.ToString("yyyy-MM-dd")" required class="form-control date" />
+                                    <input id="doe" name="doe" type="date" data-date="" data-date-format="DD/MM/YYYY" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control date" />
                                 </div>
                             </div>
                             <div class="row">
@@ -74,7 +74,7 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="dob" class="form-label">Ngày sinh</label>
-                                    <input id="dob" name="dob" value="1950-01-01" type="date" data-date="" data-date-format="DD/MM/YYYY" required class="form-control date" />
+                                    <input id="dob" name="dob" value="1990-01-01" type="date" data-date="" data-date-format="DD/MM/YYYY" class="form-control date" />
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="healthType" class="form-label">Loại sức khỏe</label>
@@ -112,7 +112,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form asp-controller="Patient" asp-action="Edit" method="post">
+                        <form asp-controller="Patient" asp-action="Edit" id="formEdit" method="post">
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="fullNameEdit" class="form-label">Họ tên</label>
@@ -120,7 +120,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="doeEdit" class="form-label">Ngày khám</label>
-                                    <input id="doeEdit" name="doe" type="date" data-date="" data-date-format="DD/MM/YYYY" required class="form-control date" />
+                                    <input id="doeEdit" name="doe" type="date" data-date="" data-date-format="DD/MM/YYYY" class="form-control date" />
                                 </div>
                             </div>
                             <div class="row">
@@ -138,11 +138,11 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="dobEdit" class="form-label">Ngày sinh</label>
-                                    <input id="dobEdit" name="dob" type="date" data-date="" data-date-format="DD/MM/YYYY" required class="form-control date" />
+                                    <input id="dobEdit" name="dob" type="date" data-date="" data-date-format="DD/MM/YYYY" class="form-control date" />
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="healthTypeEdit" class="form-label">Loại sức khỏe</label>
-                                    <select name="examObject" id="healthTypeEdit" asp-items="@ViewBag.ExamObjects" class="form-control">
+                                    <select name="examObject" id="examObjectEdit" asp-items="@ViewBag.ExamObjects" class="form-control">
                                         <option>--Chọn loại đối tượng--</option>
                                     </select>
                                 </div>
@@ -230,7 +230,7 @@
         }).trigger("change");
         ///
         $("#doeEdit").on("change", function() {
-            console.log("trigger" + this.value);
+            console.log("trigger");
             this.setAttribute(
                 "data-date",
                 moment(this.value, "YYYY-MM-DD")
@@ -253,6 +253,14 @@
             cb = $(this);
             cb.val(cb.prop('checked'));
         });
+        $("#isXrayEdit").change(function() {
+            cb = $(this);
+            cb.val(cb.prop('checked'));
+        });
+        $("#isTestEdit").change(function() {
+            cb = $(this);
+            cb.val(cb.prop('checked'));
+        });
         $(".btn-edit").click((element) => {
             let id = $(element.target).attr("data-id");
             let path = "/Patient/DetailsJson/" + id;
@@ -264,12 +272,24 @@
                 success: (response) => {
                     console.log(response);
                     $("#fullNameEdit").val(response.fullName);
-                    $("#doeEdit").attr("data-date", response.doE);
-                    //document.getElementById("doeEdit").value = response.doE;
+                    $("#doeEdit").val(response.doE).change();
                     $("#identityCodeEdit").val(response.identityCode);
-                    $("#dobEdit").attr("data-date", response.doB);
-                    $("#isXrayEdit").val(response.isXray);
-                    $("#isTestEdit").val(response.isTest);
+                    $("#dobEdit").val(response.doB).change();
+                    if (response.isXray) {
+                        $("#isXrayEdit").prop("checked", true).val(true);
+                    } else {
+                        $("#isXrayEdit").prop("checked", false).val(false);
+                    }
+                    if (response.isTest) {
+                        $("#isTestEdit").prop("checked", true).val(true);
+                    } else {
+                        $("#isTestEdit").prop("checked", false).val(false);
+                    }
+                    $("#healthTypeEdit").val(response.healthType).change();
+                    $("#examObjectEdit").val(response.examObject).change();
+                    $("#formEdit").attr("action", "/Patient/Edit/" + id);
+                    //$("#isXrayEdit").val(response.isXray);
+                    //$("#isTestEdit").val(response.isTest);
                 },
                 failure: function(response) {
                     alert("Fail" + response.responseText);
