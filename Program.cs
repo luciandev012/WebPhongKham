@@ -9,6 +9,7 @@ builder.Services.Configure<MedicalDatabaseSettings>(builder.Configuration.GetSec
 builder.Services.AddSingleton<UserServices>();
 builder.Services.AddSingleton<HealthTypeServices>();
 builder.Services.AddSingleton<ExaminationObjectServices>();
+builder.Services.AddSingleton<PatientServices>();
 
 var app = builder.Build();
 

@@ -1,0 +1,65 @@
+﻿@using WebPhongKham.Models.Entity
+@{
+    ViewData["Title"] = "Chi tiết bệnh nhân";
+}
+@model Patient
+
+<article class="content dashboard-page">
+    <section class="section">
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="mb-3">Chi tiết người bệnh</h3>
+                <div class="row mb-2">
+                    <strong class="col-md-3">Họ tên: </strong>
+                    <span class="col-md-7">@Model.FullName</span>
+                </div>
+                <div class="row mb-2">
+                    <strong class="col-md-3">CMND: </strong>
+                    <span class="col-md-7">@Model.IdentityCode</span>
+                </div>
+                <div class="row mb-2">
+                    <strong class="col-md-3">Ngày sinh: </strong>
+                    <span class="col-md-7">@Model.DoB.ToString("dd-MM-yyyy")</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h4 class="text-center mb-3">Danh sách phiếu khám</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Ngày khám</th>
+                            <th>Loại khám</th>
+                            <th>Đối tượng khám</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Model.DoE.ToString("dd-MM-yyyy")</td>
+                            <td>@Model.HealthType</td>
+                            <td>@Model.ExamObject</td>                           
+                            <td>
+                                <span class="d-block">
+                                    @(Model.IsPaid ? "Đã thu tiền" : "Chưa thu tiền")
+                                </span>
+                                <span class="d-block">
+                                    @(Model.IsXray ? "Có chụp X-quang" : "Không chụp X-quang")
+                                </span>
+                                <span class="d-block">
+                                    @(Model.IsTest ? "Có xét nghiệm" : "Không xét nghiệm")
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <a asp-controller="Patient" class="btn btn-primary mt-3">
+                    Về trang danh sách
+                </a>
+            </div>
+        </div>
+    </section>
+
+</article>

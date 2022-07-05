@@ -1,0 +1,283 @@
+﻿@using WebPhongKham.Models.Entity
+@{
+    ViewData["Title"] = "Bệnh nhân";
+}
+@model List<Patient>
+
+<style>
+            .date {
+        position: relative;
+        width: 100%; height: 41px;
+        color: white;
+    }
+
+    .date:before {
+        position: absolute;
+        top: 5px; left: 10px;
+        content: attr(data-date);
+        display: inline-block;
+        color: black;
+    }
+
+    .date::-webkit-datetime-edit,.date::-webkit-inner-spin-button, .date::-webkit-clear-button {
+        display: none;
+    }
+
+    .date::-webkit-calendar-picker-indicator {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        color: black;
+        opacity: 1;
+    }
+</style>
+
+<article class="content dashboard-page">
+    <section class="section">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Thêm bệnh nhân
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Thêm bệnh nhân</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form asp-controller="Patient" asp-action="Create" method="post">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="fullName" class="form-label">Họ tên</label>
+                                    <input id="fullName" name="fullName" type="text" required class="form-control" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="doe" class="form-label">Ngày khám</label>
+                                    <input id="doe" name="doe" type="date" data-date="" data-date-format="DD/MM/YYYY" value="@DateTime.Now.ToString("yyyy-MM-dd")" required class="form-control date" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="identityCode" class="form-label">CMND</label>
+                                    <input id="identityCode" name="identityCode" type="text" required class="form-control" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="healthType" class="form-label">Loại sức khỏe khám</label>
+                                    <select name="healthType" asp-items="@ViewBag.HealthTypes" class="form-control">
+                                        <option>--Chọn loại sức khỏe--</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="dob" class="form-label">Ngày sinh</label>
+                                    <input id="dob" name="dob" value="1950-01-01" type="date" data-date="" data-date-format="DD/MM/YYYY" required class="form-control date" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="healthType" class="form-label">Loại sức khỏe</label>
+                                    <select name="examObject" asp-items="@ViewBag.ExamObjects" class="form-control">
+                                        <option>--Chọn loại đối tượng--</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6" style="padding-left: 2rem;">
+                                    <input class="form-check-input" type="checkbox" value="0" id="isXray" name="isXray" />
+                                    <label class="form-check-label" style="margin-left: 5px;" for="isXray">Có chụp X-quang</label>
+                                </div>
+                                <div class="form-group col-md-6" style="padding-left: 2rem;">
+                                    <input class="form-check-input" type="checkbox" value="0" id="isTest" name="isTest" />
+                                    <label class="form-check-label" style="margin-left: 5px;" for="isTest">Có xét nghiệm</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Thêm bệnh nhân</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Second Modal -->
+        <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel2">Sửa bệnh nhân</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form asp-controller="Patient" asp-action="Edit" method="post">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="fullNameEdit" class="form-label">Họ tên</label>
+                                    <input id="fullNameEdit" name="fullName" type="text" required class="form-control" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="doeEdit" class="form-label">Ngày khám</label>
+                                    <input id="doeEdit" name="doe" type="date" data-date="" data-date-format="DD/MM/YYYY" required class="form-control date" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="identityCodeEdit" class="form-label">CMND</label>
+                                    <input id="identityCodeEdit" name="identityCode" type="text" required class="form-control" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="healthTypeEdit" class="form-label">Loại sức khỏe khám</label>
+                                    <select name="healthType" id="healthTypeEdit" asp-items="@ViewBag.HealthTypes" class="form-control">
+                                        <option>--Chọn loại sức khỏe--</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="dobEdit" class="form-label">Ngày sinh</label>
+                                    <input id="dobEdit" name="dob" type="date" data-date="" data-date-format="DD/MM/YYYY" required class="form-control date" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="healthTypeEdit" class="form-label">Loại sức khỏe</label>
+                                    <select name="examObject" id="healthTypeEdit" asp-items="@ViewBag.ExamObjects" class="form-control">
+                                        <option>--Chọn loại đối tượng--</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6" style="padding-left: 2rem;">
+                                    <input class="form-check-input" type="checkbox" value="0" id="isXrayEdit" name="isXray" />
+                                    <label class="form-check-label" style="margin-left: 5px;" for="isXrayEdit">Có chụp X-quang</label>
+                                </div>
+                                <div class="form-group col-md-6" style="padding-left: 2rem;">
+                                    <input class="form-check-input" type="checkbox" value="0" id="isTestEdit" name="isTest" />
+                                    <label class="form-check-label" style="margin-left: 5px;" for="isTestEdit">Có xét nghiệm</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Lưu bệnh nhân</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Họ tên</th>
+                    <th scope="col">Loại khám</th>
+                    <th scope="col">Đối tượng khám</th>
+                    <th scope="col">Ngày khám</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.FullName</td>
+                        <td>@item.HealthType</td>
+                        <td>@item.ExamObject</td>
+                        <td>@item.DoE.ToString("dd-MM-yyyy")</td>
+                        <td class="fit">
+                            <a asp-controller="Patient" asp-action="Details" asp-route-id="@item.Id" target="_new" class="btn btn-info"><i class="fa-solid fa-eye"></i> Xem</a>
+                            <button data-id="@item.Id" type="button" id="btnEdit" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" class="btn btn-secondary btn-edit"><i class="fa-solid fa-pen-to-square"></i> Sửa</button>
+                            <a asp-controller="Patient" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</a>
+                            @if (item.IsPaid)
+                            {
+                                <p><i class="fa-solid fa-check" style="color: green;"></i> Đã thu tiền</p>
+                            }
+                            else
+                            {
+                                <p><i class="fa-solid fa-xmark" style="color: red;"></i> Chưa thu tiền</p>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+
+
+        <div>
+        </div>
+    </section>
+
+</article>
+@section scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script>
+
+        $("#doe").on("change", function() {
+            this.setAttribute(
+                "data-date",
+                moment(this.value, "YYYY-MM-DD")
+                    .format(this.getAttribute("data-date-format"))
+            )
+        }).trigger("change");
+        $("#dob").on("change", function() {
+            this.setAttribute(
+                "data-date",
+                moment(this.value, "YYYY-MM-DD")
+                    .format(this.getAttribute("data-date-format"))
+            )
+        }).trigger("change");
+        ///
+        $("#doeEdit").on("change", function() {
+            console.log("trigger" + this.value);
+            this.setAttribute(
+                "data-date",
+                moment(this.value, "YYYY-MM-DD")
+                    .format(this.getAttribute("data-date-format"))
+            )
+        }).trigger("change");
+        $("#dobEdit").on("change", function() {
+            this.setAttribute(
+                "data-date",
+                moment(this.value, "YYYY-MM-DD")
+                    .format(this.getAttribute("data-date-format"))
+            )
+        }).trigger("change");
+        ///
+        $("#isXray").change(function() {
+            cb = $(this);
+            cb.val(cb.prop('checked'));
+        });
+        $("#isTest").change(function() {
+            cb = $(this);
+            cb.val(cb.prop('checked'));
+        });
+        $(".btn-edit").click((element) => {
+            let id = $(element.target).attr("data-id");
+            let path = "/Patient/DetailsJson/" + id;
+            $.ajax({
+                type: "GET",
+                url: path,
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                success: (response) => {
+                    console.log(response);
+                    $("#fullNameEdit").val(response.fullName);
+                    $("#doeEdit").attr("data-date", response.doE);
+                    //document.getElementById("doeEdit").value = response.doE;
+                    $("#identityCodeEdit").val(response.identityCode);
+                    $("#dobEdit").attr("data-date", response.doB);
+                    $("#isXrayEdit").val(response.isXray);
+                    $("#isTestEdit").val(response.isTest);
+                },
+                failure: function(response) {
+                    alert("Fail" + response.responseText);
+                },
+                error: function(response) {
+                    alert("Error" + response.responseText);
+                }
+            });
+        });
+    </script>
+}
