@@ -28,17 +28,17 @@
                                         <h4 class="mt-1 mb-5 pb-1">Đăng nhập</h4>
                                     </div>
 
-                                    <form>
+                                    <form asp-controller="User" asp-action="Login" method="post">
                                         <p>Điền thông tin tài khoản</p>
 
                                         <div class="form-outline mb-4">
-                                            <input type="email" id="form2Example11" class="form-control"
+                                            <input name="username" type="email" id="form2Example11" class="form-control"
                                                    placeholder="Username" />
                                             <label class="form-label" for="form2Example11">Tài khoản</label>
                                         </div>
 
                                         <div class="form-outline mb-4">
-                                            <input type="password" id="form2Example22" class="form-control" />
+                                            <input name="password" type="password" id="form2Example22" class="form-control" />
                                             <label class="form-label" for="form2Example22">Mật khẩu</label>
                                         </div>
 
