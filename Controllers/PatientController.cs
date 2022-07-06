@@ -19,9 +19,9 @@ namespace WebPhongKham.Controllers
             _examinationObjectServices = examinationObjectServices;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 2)
         {
-            var patients = await _patientServices.GetPatientsAsync();
+            var patients = await _patientServices.GetPatientsAsync(pageIndex, pageSize);
             var healthTypes = await _healthServices.GetHealthTypesAsync();
             ViewBag.HealthTypes = healthTypes.Select(x => new SelectListItem()
             {

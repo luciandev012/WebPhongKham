@@ -2,6 +2,7 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using WebPhongKham.Models.Entity;
+using WebPhongKham.Models.Paging;
 
 namespace WebPhongKham.Services
 {
@@ -18,7 +19,20 @@ namespace WebPhongKham.Services
             _patientCollection = mongoDatabase.GetCollection<Patient>("patients");
         }
 
-        public async Task<List<Patient>> GetPatientsAsync() => await _patientCollection.Find(_ => true).ToListAsync();
+        public async Task<PagedResult<Patient>> GetPatientsAsync(int pageIndex, int pageSize)
+        {
+            var patients = await _patientCollection.Find(_ => true).ToListAsync();
+            var totalRow = patients.Count;
+            var result = patients.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            var pagedResult = new PagedResult<Patient>
+            {
+                Items = result,
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                TotalRecord = totalRow
+            };
+            return pagedResult;
+        }
 
         public async Task CreateAsync(Patient patient) => await _patientCollection.InsertOneAsync(patient);
         
