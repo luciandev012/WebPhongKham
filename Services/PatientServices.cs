@@ -19,9 +19,13 @@ namespace WebPhongKham.Services
             _patientCollection = mongoDatabase.GetCollection<Patient>("patients");
         }
 
-        public async Task<PagedResult<Patient>> GetPatientsAsync(int pageIndex, int pageSize)
+        public async Task<PagedResult<Patient>> GetPatientsAsync(int pageIndex, int pageSize, string name, string type, string obj, DateTime start, DateTime end)
         {
-            var patients = await _patientCollection.Find(_ => true).ToListAsync();
+            var patients = await _patientCollection.Find(x => x.FullName.Contains(name)
+                                                        && x.HealthType.Contains(type)
+                                                        && x.ExamObject.Contains(obj)
+                                                        && x.DoE >= start
+                                                        && x.DoE <= end).ToListAsync();
             var totalRow = patients.Count;
             var result = patients.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             var pagedResult = new PagedResult<Patient>

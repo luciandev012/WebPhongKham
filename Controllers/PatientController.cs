@@ -19,9 +19,16 @@ namespace WebPhongKham.Controllers
             _examinationObjectServices = examinationObjectServices;
         }
 
-        public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 2)
+        public async Task<IActionResult> Index(string searchName, string searchType, string searchObject, DateTime searchStart,
+            DateTime searchEnd, int pageIndex = 1, int pageSize = 2)
         {
-            var patients = await _patientServices.GetPatientsAsync(pageIndex, pageSize);
+            searchName = searchName ?? ""; //check null value: if null value = "", else value = value
+            searchType = searchType ?? "";
+            searchObject = searchObject ?? "";
+            var validateTime = new DateTime(2020, 1, 1);
+            searchStart = searchStart < validateTime ? validateTime : searchStart;
+            searchEnd = searchEnd < validateTime ? new DateTime(2025, 1, 1) : searchEnd;
+            var patients = await _patientServices.GetPatientsAsync(pageIndex, pageSize, searchName, searchType, searchObject, searchStart, searchEnd);
             var healthTypes = await _healthServices.GetHealthTypesAsync();
             ViewBag.HealthTypes = healthTypes.Select(x => new SelectListItem()
             {
@@ -34,6 +41,15 @@ namespace WebPhongKham.Controllers
                 Value = x.Name,
                 Text = x.Name
             });
+            var prevKeyword = new
+            {
+                name = searchName,
+                type = searchType,
+                obj = searchObject,
+                start = searchStart,
+                end = searchEnd
+            };
+            ViewBag.PrevKeyword = searchName;
             return View(patients);
         }
 

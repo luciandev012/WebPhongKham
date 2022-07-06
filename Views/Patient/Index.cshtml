@@ -45,22 +45,22 @@
         <a class="btn btn-primary" id="btn-search"><i class="fa-solid fa-magnifying-glass"></i></a>
 
         <div class="mb-3" id="searchForm" style="display: none">
-            <form id="form_search" autocomplete="off">
+            <form id="form_search" asp-controller="Patient" autocomplete="off">
                 <div class="row">
                     <div class="col-md-3">
                         <label for="fullName" class="form-label">Họ tên</label>
-                        <input id="searchName" name="searchName" type="text" class="form-control" />
+                        <input id="searchName" name="searchName" value="@ViewBag.PrevKeyword" type="text" class="form-control" />
                     </div>
                     <div class="col-md-3">
                         <label for="searchType" class="form-label">Loại sức khỏe</label>
                         <select name="searchType" id="searchType" asp-items="@ViewBag.HealthTypes" class="form-control">
-                            <option>--Chọn loại sức khỏe--</option>
+                            <option value="">--Chọn loại sức khỏe--</option>
                         </select>
                     </div>
                     <div class="col-md-3">
                         <label for="searchObject" class="form-label">Loại đối tượng</label>
                         <select name="searchObject" id="searchObject" asp-items="@ViewBag.ExamObjects" class="form-control">
-                            <option>--Chọn loại đối tượng--</option>
+                            <option value="">--Chọn loại đối tượng--</option>
                         </select>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
                         <input id="searchEnd" name="searchEnd" type="date" data-date="" data-date-format="DD/MM/YYYY" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control date" />
                     </div>
                     <div class="col-md-3" style="padding-top: 30px">
-                        <button class="btn btn-success" id="search">Tìm kiếm</button>
+                        <button class="btn btn-success" type="submit" id="search">Tìm kiếm</button>
                     </div>
                 </div>
             </form>
@@ -249,7 +249,6 @@
 @section scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script>
-
         $("#doe").on("change", function() {
             this.setAttribute(
                 "data-date",
