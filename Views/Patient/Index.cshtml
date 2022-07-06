@@ -69,7 +69,7 @@
                         <label for="searchStart" class="form-label">Từ ngày</label>
                         <input id="searchStart" name="searchStart" type="date" data-date="" data-date-format="DD/MM/YYYY" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control date" />
                     </div>
-                     <div class="col-md-3">
+                    <div class="col-md-3">
                         <label for="searchEnd" class="form-label">Đến ngày</label>
                         <input id="searchEnd" name="searchEnd" type="date" data-date="" data-date-format="DD/MM/YYYY" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control date" />
                     </div>
@@ -228,7 +228,7 @@
                         <td>@item.DoE.ToString("dd-MM-yyyy")</td>
                         <td class="fit">
                             <a asp-controller="Patient" asp-action="Details" asp-route-id="@item.Id" target="_new" class="btn btn-info"><i class="fa-solid fa-eye"></i> Xem</a>
-                            <button data-id="@item.Id" type="button" id="btnEdit" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" class="btn btn-secondary btn-edit"><i class="fa-solid fa-pen-to-square"></i> Sửa</button>
+                            <button data-id="@item.Id" type="button" id="btnEdit" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" class="btn btn-secondary btn-edit"><i data-id="@item.Id" class="fa-solid fa-pen-to-square"></i> Sửa</button>
                             <a asp-controller="Patient" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</a>
                             @if (item.IsPaid)
                             {
@@ -249,107 +249,111 @@
 @section scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script>
-        $("#doe").on("change", function() {
-            this.setAttribute(
-                "data-date",
-                moment(this.value, "YYYY-MM-DD")
-                    .format(this.getAttribute("data-date-format"))
-            )
-        }).trigger("change");
-        $("#dob").on("change", function() {
-            this.setAttribute(
-                "data-date",
-                moment(this.value, "YYYY-MM-DD")
-                    .format(this.getAttribute("data-date-format"))
-            )
-        }).trigger("change");
-        /// Search date
-        $("#searchStart").on("change", function() {
-            this.setAttribute(
-                "data-date",
-                moment(this.value, "YYYY-MM-DD")
-                    .format(this.getAttribute("data-date-format"))
-            )
-        }).trigger("change");
-        $("#searchEnd").on("change", function() {
-            this.setAttribute(
-                "data-date",
-                moment(this.value, "YYYY-MM-DD")
-                    .format(this.getAttribute("data-date-format"))
-            )
-        }).trigger("change");
-        ///
-        $("#doeEdit").on("change", function() {
-            this.setAttribute(
-                "data-date",
-                moment(this.value, "YYYY-MM-DD")
-                    .format(this.getAttribute("data-date-format"))
-            )
-        }).trigger("change");
-        $("#dobEdit").on("change", function() {
-            this.setAttribute(
-                "data-date",
-                moment(this.value, "YYYY-MM-DD")
-                    .format(this.getAttribute("data-date-format"))
-            )
-        }).trigger("change");
-        ///
-        $("#isXray").change(function() {
-            cb = $(this);
-            cb.val(cb.prop('checked'));
-        });
-        $("#isTest").change(function() {
-            cb = $(this);
-            cb.val(cb.prop('checked'));
-        });
-        $("#isXrayEdit").change(function() {
-            cb = $(this);
-            cb.val(cb.prop('checked'));
-        });
-        $("#isTestEdit").change(function() {
-            cb = $(this);
-            cb.val(cb.prop('checked'));
-        });
-        $(".btn-edit").click((element) => {
-            let id = $(element.target).attr("data-id");
-            let path = "/Patient/DetailsJson/" + id;
-            $.ajax({
-                type: "GET",
-                url: path,
-                dataType: "json",
-                contentType: 'application/json; charset=utf-8',
-                success: (response) => {
-                    console.log(response);
-                    $("#fullNameEdit").val(response.fullName);
-                    $("#doeEdit").val(response.doE).change();
-                    $("#identityCodeEdit").val(response.identityCode);
-                    $("#dobEdit").val(response.doB).change();
-                    if (response.isXray) {
-                        $("#isXrayEdit").prop("checked", true).val(true);
-                    } else {
-                        $("#isXrayEdit").prop("checked", false).val(false);
-                    }
-                    if (response.isTest) {
-                        $("#isTestEdit").prop("checked", true).val(true);
-                    } else {
-                        $("#isTestEdit").prop("checked", false).val(false);
-                    }
-                    $("#healthTypeEdit").val(response.healthType).change();
-                    $("#examObjectEdit").val(response.examObject).change();
-                    $("#formEdit").attr("action", "/Patient/Edit/" + id);
-                    //$("#isXrayEdit").val(response.isXray);
-                    //$("#isTestEdit").val(response.isTest);
-                },
-                failure: function(response) {
-                    alert("Fail" + response.responseText);
-                },
-                error: function(response) {
-                    alert("Error" + response.responseText);
-                }
+        $(document).ready(() => {
+            $("i").click(e => e.stopPropagation());
+            $("#doe").on("change", function() {
+                this.setAttribute(
+                    "data-date",
+                    moment(this.value, "YYYY-MM-DD")
+                        .format(this.getAttribute("data-date-format"))
+                )
+            }).trigger("change");
+            $("#dob").on("change", function() {
+                this.setAttribute(
+                    "data-date",
+                    moment(this.value, "YYYY-MM-DD")
+                        .format(this.getAttribute("data-date-format"))
+                )
+            }).trigger("change");
+            /// Search date
+            $("#searchStart").on("change", function() {
+                this.setAttribute(
+                    "data-date",
+                    moment(this.value, "YYYY-MM-DD")
+                        .format(this.getAttribute("data-date-format"))
+                )
+            }).trigger("change");
+            $("#searchEnd").on("change", function() {
+                this.setAttribute(
+                    "data-date",
+                    moment(this.value, "YYYY-MM-DD")
+                        .format(this.getAttribute("data-date-format"))
+                )
+            }).trigger("change");
+            ///
+            $("#doeEdit").on("change", function() {
+                this.setAttribute(
+                    "data-date",
+                    moment(this.value, "YYYY-MM-DD")
+                        .format(this.getAttribute("data-date-format"))
+                )
+            }).trigger("change");
+            $("#dobEdit").on("change", function() {
+                this.setAttribute(
+                    "data-date",
+                    moment(this.value, "YYYY-MM-DD")
+                        .format(this.getAttribute("data-date-format"))
+                )
+            }).trigger("change");
+            ///
+            $("#isXray").change(function() {
+                cb = $(this);
+                cb.val(cb.prop('checked'));
             });
-        });
-$("#btn-search").click(() => {
-    $("#searchForm").slideToggle();
-});
+            $("#isTest").change(function() {
+                cb = $(this);
+                cb.val(cb.prop('checked'));
+            });
+            $("#isXrayEdit").change(function() {
+                cb = $(this);
+                cb.val(cb.prop('checked'));
+            });
+            $("#isTestEdit").change(function() {
+                cb = $(this);
+                cb.val(cb.prop('checked'));
+            });
+            $(".btn-edit").click((element) => {
+                console.log(element.target);
+                let id = $(element.target).attr("data-id");
+                let path = "/Patient/DetailsJson/" + id;
+                $.ajax({
+                    type: "GET",
+                    url: path,
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    success: (response) => {
+                        console.log(response);
+                        $("#fullNameEdit").val(response.fullName);
+                        $("#doeEdit").val(response.doE).change();
+                        $("#identityCodeEdit").val(response.identityCode);
+                        $("#dobEdit").val(response.doB).change();
+                        if (response.isXray) {
+                            $("#isXrayEdit").prop("checked", true).val(true);
+                        } else {
+                            $("#isXrayEdit").prop("checked", false).val(false);
+                        }
+                        if (response.isTest) {
+                            $("#isTestEdit").prop("checked", true).val(true);
+                        } else {
+                            $("#isTestEdit").prop("checked", false).val(false);
+                        }
+                        $("#healthTypeEdit").val(response.healthType).change();
+                        $("#examObjectEdit").val(response.examObject).change();
+                        $("#formEdit").attr("action", "/Patient/Edit/" + id);
+                        //$("#isXrayEdit").val(response.isXray);
+                        //$("#isTestEdit").val(response.isTest);
+                    },
+                    failure: function(response) {
+                        alert("Fail" + response.responseText);
+                    },
+                    error: function(response) {
+                        alert("Error" + response.responseText);
+                    }
+                });
+            });
+            $("#btn-search").click(() => {
+                $("#searchForm").slideToggle();
+            });
+        })
     </script>
 }

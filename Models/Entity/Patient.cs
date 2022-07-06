@@ -12,6 +12,8 @@ namespace WebPhongKham.Models.Entity
 
         public string IdentityCode { get; set; }
 
+        public string DigitalInfo { get; set; }
+
         public DateTime DoB { get; set; }
 
         public DateTime DoE { get; set; }

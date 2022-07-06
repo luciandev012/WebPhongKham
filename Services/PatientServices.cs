@@ -50,12 +50,21 @@ namespace WebPhongKham.Services
                                               .Set(s => s.ExamObject, newPatient.ExamObject)
                                               .Set(s => s.HealthType, newPatient.HealthType)
                                               .Set(s => s.IsTest, newPatient.IsTest)
-                                              .Set(s => s.IsXray, newPatient.IsXray);
+                                              .Set(s => s.IsXray, newPatient.IsXray)
+                                              .Set(s => s.DigitalInfo, newPatient.DigitalInfo);
             await _patientCollection.UpdateOneAsync(filter, update);
         }
 
         public async Task DeleteAsync(string id) => await _patientCollection.FindOneAndDeleteAsync(x => x.Id == id);
 
         public async Task<Patient> GetPatientAsync(string id) => await _patientCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+
+        public async Task ChangePaidStatus(string id)
+        {
+            var patient = await _patientCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+            var filter = Builders<Patient>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<Patient>.Update.Set(s => s.IsPaid, !patient.IsPaid);
+            await _patientCollection.UpdateOneAsync(filter, update);
+        }
     }
 }
