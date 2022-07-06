@@ -30,5 +30,6 @@ namespace WebPhongKham.Services
             var update = Builders<HealthType>.Update.Set(s => s.Price, price);
             await _healthCollection.UpdateOneAsync(filter, update);
         }
+        public async Task<float> GetPriceAsync(string name) => (await _healthCollection.Find(x => x.Name == name).FirstOrDefaultAsync()).Price;
     }
 }

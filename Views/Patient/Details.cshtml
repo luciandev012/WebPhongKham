@@ -32,6 +32,7 @@
                             <th>Ngày khám</th>
                             <th>Loại khám</th>
                             <th>Đối tượng khám</th>
+                            <th>Thành tiền</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -39,7 +40,8 @@
                         <tr>
                             <td>@Model.DoE.ToString("dd-MM-yyyy")</td>
                             <td>@Model.HealthType</td>
-                            <td>@Model.ExamObject</td>                           
+                            <td>@Model.ExamObject</td>
+                            <td>@(String.Format("{0:n0}", ViewBag.Price)) VNĐ</td>
                             <td>
                                 <span class="d-block">
                                     @(Model.IsPaid ? "Đã thu tiền" : "Chưa thu tiền")

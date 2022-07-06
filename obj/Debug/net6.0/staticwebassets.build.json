@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "ZECQdT+GnmiyvDtSRqfP9Uwsfg9MkSBqshsKE9cD5Jc=",
+  "Hash": "HBMS6XxV5uYXDZUJvA5JG3nHrTXA59D4n3GcILb7X8U=",
   "Source": "WebPhongKham",
   "BasePath": "_content/WebPhongKham",
   "Mode": "Default",
@@ -204,6 +204,23 @@
       "OriginalItemSpec": "wwwroot\\css\\toast.css"
     },
     {
+      "Identity": "D:\\TaiLieuHocTap\\DotNetCore\\WebPhongKham\\wwwroot\\css\\user.css",
+      "SourceId": "WebPhongKham",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\TaiLieuHocTap\\DotNetCore\\WebPhongKham\\wwwroot\\",
+      "BasePath": "_content/WebPhongKham",
+      "RelativePath": "css/user.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\user.css"
+    },
+    {
       "Identity": "D:\\TaiLieuHocTap\\DotNetCore\\WebPhongKham\\wwwroot\\css\\vendor.css",
       "SourceId": "WebPhongKham",
       "SourceType": "Discovered",
@@ -236,6 +253,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "D:\\TaiLieuHocTap\\DotNetCore\\WebPhongKham\\wwwroot\\imgs\\kham-benh.jpg",
+      "SourceId": "WebPhongKham",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\TaiLieuHocTap\\DotNetCore\\WebPhongKham\\wwwroot\\",
+      "BasePath": "_content/WebPhongKham",
+      "RelativePath": "imgs/kham-benh.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\imgs\\kham-benh.jpg"
     },
     {
       "Identity": "D:\\TaiLieuHocTap\\DotNetCore\\WebPhongKham\\wwwroot\\js\\all.min.js",

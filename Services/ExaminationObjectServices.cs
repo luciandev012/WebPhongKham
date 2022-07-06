@@ -32,5 +32,6 @@ namespace WebPhongKham.Services
             var update = Builders<ExaminationObject>.Update.Set(s => s.Price, price);
             await _examCollection.UpdateOneAsync(filter, update);
         }
+        public async Task<float> GetPriceAsync(string name) => (await _examCollection.Find(x => x.Name == name).FirstOrDefaultAsync()).Price;
     }
 }

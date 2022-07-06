@@ -66,6 +66,8 @@ namespace WebPhongKham.Controllers
         public async Task<IActionResult> Details(string id)
         {
             var patient = await _patientServices.GetPatientAsync(id);
+            var price = (await _examinationObjectServices.GetPriceAsync(patient.ExamObject)) + (await _healthServices.GetPriceAsync(patient.HealthType));
+            ViewBag.Price = price;
             return View(patient);
         }
 
