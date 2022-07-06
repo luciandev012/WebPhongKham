@@ -27,5 +27,7 @@ namespace WebPhongKham.Models.Entity
         public bool IsTest { get; set; }
 
         public bool IsXray { get; set; }
+        public bool IsDoneTest { get; set; } = false;
+        public bool IsDoneXray { get; set; } = false;
     }
 }

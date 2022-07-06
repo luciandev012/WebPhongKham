@@ -32,7 +32,7 @@ namespace WebPhongKham.Controllers
                 Value = x.Name,
                 Text = x.Name
             });
-            var exams = await _examinationObjectServices.GetHealthTypesAsync();
+            var exams = await _examinationObjectServices.GetExamObjectsAsync();
             ViewBag.ExamObjects = exams.Select(x => new SelectListItem()
             {
                 Value = x.Name,
@@ -61,6 +61,30 @@ namespace WebPhongKham.Controllers
         {
             await _patientServices.ChangePaidStatus(id);
             return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public async Task<IActionResult> ManageEOPrice()
+        {
+            var examObjects = await _examinationObjectServices.GetExamObjectsAsync();
+            return View(examObjects);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ManageEOPrice(string id, float price)
+        {
+            await _examinationObjectServices.UpdatePriceAsync(id, price);
+            return RedirectToAction("ManageEOPrice");
+        }
+        [HttpGet]
+        public async Task<IActionResult> ManageHTPrice()
+        {
+            var healths = await _healthServices.GetHealthTypesAsync();
+            return View(healths);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ManageHTPrice(string id, float price)
+        {
+            await _healthServices.UpdatePriceAsync(id, price);
+            return RedirectToAction("ManageHTPrice");
         }
     }
 }

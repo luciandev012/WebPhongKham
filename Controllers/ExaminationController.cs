@@ -14,7 +14,7 @@ namespace WebPhongKham.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var types = await _examServices.GetHealthTypesAsync();
+            var types = await _examServices.GetExamObjectsAsync();
             return View(types);
         }
         [HttpPost]
@@ -44,6 +44,19 @@ namespace WebPhongKham.Controllers
 
                 return RedirectToAction("Index");
             }
+        }
+        [HttpGet]
+        public async Task<JsonResult> DetailsJson(string id)
+        {
+            var exam = await _examServices.GetAsync(id);
+            var result = new
+            {
+                id = exam.Id,
+                name = exam.Name,
+                deletable = exam.Deletable,
+                price = exam.Price
+            };
+            return Json(result);
         }
     }
 }

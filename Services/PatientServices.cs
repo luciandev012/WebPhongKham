@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using System.Data.Entity;
 using WebPhongKham.Models.Entity;
 using WebPhongKham.Models.Paging;
 
@@ -21,12 +22,53 @@ namespace WebPhongKham.Services
 
         public async Task<PagedResult<Patient>> GetPatientsAsync(int pageIndex, int pageSize, string name, string type, string obj, DateTime start, DateTime end)
         {
-            var patients = await _patientCollection.Find(x => x.FullName.Contains(name)
-                                                        && x.HealthType.Contains(type)
-                                                        && x.ExamObject.Contains(obj)
-                                                        && x.DoE >= start
-                                                        && x.DoE <= end).ToListAsync();
-            var totalRow = patients.Count;
+            var res = await _patientCollection.Find(x => x.FullName.ToLower().Contains(name)
+                                                        && x.HealthType.ToLower().Contains(type)
+                                                        && x.ExamObject.ToLower().Contains(obj)).ToListAsync();
+            var patients = from p in res
+                           where p.DoE.CompareTo(start) != -1 && p.DoE.CompareTo(end) != 1
+                           select p;
+            var totalRow = patients.Count();
+            var result = patients.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            var pagedResult = new PagedResult<Patient>
+            {
+                Items = result,
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                TotalRecord = totalRow
+            };
+            return pagedResult;
+        }
+        public async Task<PagedResult<Patient>> GetPaidAndTestPatientsAsync(int pageIndex, int pageSize, string name, string type, string obj, DateTime start, DateTime end)
+        {
+            var res = await _patientCollection.Find(x => x.FullName.ToLower().Contains(name)
+                                                        && x.HealthType.ToLower().Contains(type)
+                                                        && x.ExamObject.ToLower().Contains(obj)
+                                                        && x.IsPaid && x.IsTest).ToListAsync();
+            var patients = from p in res
+                           where p.DoE.CompareTo(start) != -1 && p.DoE.CompareTo(end) != 1
+                           select p;
+            var totalRow = patients.Count();
+            var result = patients.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            var pagedResult = new PagedResult<Patient>
+            {
+                Items = result,
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                TotalRecord = totalRow
+            };
+            return pagedResult;
+        }
+        public async Task<PagedResult<Patient>> GetPaidAndXrayPatientsAsync(int pageIndex, int pageSize, string name, string type, string obj, DateTime start, DateTime end)
+        {
+            var res = await _patientCollection.Find(x => x.FullName.ToLower().Contains(name)
+                                                        && x.HealthType.ToLower().Contains(type)
+                                                        && x.ExamObject.ToLower().Contains(obj)
+                                                        && x.IsPaid && x.IsXray).ToListAsync();
+            var patients = from p in res
+                           where p.DoE.CompareTo(start) != -1 && p.DoE.CompareTo(end) != 1
+                           select p;
+            var totalRow = patients.Count();
             var result = patients.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             var pagedResult = new PagedResult<Patient>
             {
@@ -64,6 +106,20 @@ namespace WebPhongKham.Services
             var patient = await _patientCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
             var filter = Builders<Patient>.Filter.Eq("_id", ObjectId.Parse(id));
             var update = Builders<Patient>.Update.Set(s => s.IsPaid, !patient.IsPaid);
+            await _patientCollection.UpdateOneAsync(filter, update);
+        }
+        public async Task ChangeTestStatus(string id)
+        {
+            var patient = await _patientCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+            var filter = Builders<Patient>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<Patient>.Update.Set(s => s.IsDoneTest, !patient.IsDoneTest);
+            await _patientCollection.UpdateOneAsync(filter, update);
+        }
+        public async Task ChangeXrayStatus(string id)
+        {
+            var patient = await _patientCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+            var filter = Builders<Patient>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<Patient>.Update.Set(s => s.IsDoneXray, !patient.IsDoneXray);
             await _patientCollection.UpdateOneAsync(filter, update);
         }
     }

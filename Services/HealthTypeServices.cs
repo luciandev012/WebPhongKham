@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using WebPhongKham.Models.Entity;
 
@@ -22,5 +23,12 @@ namespace WebPhongKham.Services
         public async Task CreateAsync(HealthType healthType) => await _healthCollection.InsertOneAsync(healthType);
 
         public async Task DeleteAsync(string id) => await _healthCollection.FindOneAndDeleteAsync(x => x.Id == id);
+        public async Task<HealthType> GetAsync(string id) => await _healthCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+        public async Task UpdatePriceAsync(string id, float price)
+        {
+            var filter = Builders<HealthType>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<HealthType>.Update.Set(s => s.Price, price);
+            await _healthCollection.UpdateOneAsync(filter, update);
+        }
     }
 }

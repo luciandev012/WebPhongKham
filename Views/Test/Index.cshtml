@@ -1,0 +1,158 @@
+﻿@using WebPhongKham.Models.Entity
+@using WebPhongKham.Models.Paging
+@{
+    ViewData["Title"] = "Bệnh nhân";
+}
+@model PagedResult<Patient>
+
+<style>
+    .date {
+        position: relative;
+        width: 100%;
+        height: 41px;
+        color: white;
+    }
+
+        .date:before {
+            position: absolute;
+            top: 5px;
+            left: 10px;
+            content: attr(data-date);
+            display: inline-block;
+            color: black;
+        }
+
+        .date::-webkit-datetime-edit, .date::-webkit-inner-spin-button, .date::-webkit-clear-button {
+            display: none;
+        }
+
+        .date::-webkit-calendar-picker-indicator {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            color: black;
+            opacity: 1;
+        }
+</style>
+
+<article class="content dashboard-page">
+    <section class="section">
+        <button class="btn btn-primary" id="btn-refresh" type="button">Làm mới</button>
+        <a class="btn btn-primary" id="btn-search"><i class="fa-solid fa-magnifying-glass"></i></a>
+
+        <div class="mb-3" id="searchForm" style="display: none">
+            <form id="form_search" asp-controller="Test" autocomplete="off">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label for="fullName" class="form-label">Họ tên</label>
+                        <input id="searchName" name="searchName" value="@ViewBag.PrevKeyword" type="text" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <label for="searchType" class="form-label">Loại sức khỏe</label>
+                        <select name="searchType" id="searchType" asp-items="@ViewBag.HealthTypes" class="form-control">
+                            <option value="">--Chọn loại sức khỏe--</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="searchObject" class="form-label">Loại đối tượng</label>
+                        <select name="searchObject" id="searchObject" asp-items="@ViewBag.ExamObjects" class="form-control">
+                            <option value="">--Chọn loại đối tượng--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label for="searchStart" class="form-label">Từ ngày</label>
+                        <input id="searchStart" name="searchStart" type="date" data-date="" data-date-format="DD/MM/YYYY" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control date" />
+                    </div>
+                     <div class="col-md-3">
+                        <label for="searchEnd" class="form-label">Đến ngày</label>
+                        <input id="searchEnd" name="searchEnd" type="date" data-date="" data-date-format="DD/MM/YYYY" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control date" />
+                    </div>
+                    <div class="col-md-3" style="padding-top: 30px">
+                        <button class="btn btn-success" type="submit" id="search">Tìm kiếm</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Họ tên</th>
+                    <th scope="col">Ngày sinh</th>
+                    <th scope="col">Loại khám</th>
+                    <th scope="col">Đối tượng khám</th>
+                    <th scope="col">Ngày khám</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@item.FullName</td>
+                        <td>@item.DoB.ToString("dd-MM-yyyy")</td>
+                        <td>@item.HealthType</td>
+                        <td>@item.ExamObject</td>
+                        <td>@item.DoE.ToString("dd-MM-yyyy")</td>
+                        <td class="fit">
+                            <a asp-controller="Patient" asp-action="Details" asp-route-id="@item.Id" target="_new" class="btn btn-info"><i class="fa-solid fa-eye"></i> Xem</a>
+                            @if (!item.IsDoneTest)
+                            {
+                                <button data-id="@item.Id" class="btn btn-secondary btn-test"><i class="fa-solid fa-check" style="color: green;"></i> Đã xét nghiệm</button>
+                            }
+                            else
+                            {
+                                <button data-id="@item.Id" class="btn btn-secondary btn-test"><i class="fa-solid fa-xmark" style="color: red;"></i> Chưa xét nghiệm</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+    @await Component.InvokeAsync("Paging", Model)
+</article>
+@section scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script>
+        /// Search date
+        $("#searchStart").on("change", function() {
+            this.setAttribute(
+                "data-date",
+                moment(this.value, "YYYY-MM-DD")
+                    .format(this.getAttribute("data-date-format"))
+            )
+        }).trigger("change");
+        $("#searchEnd").on("change", function() {
+            this.setAttribute(
+                "data-date",
+                moment(this.value, "YYYY-MM-DD")
+                    .format(this.getAttribute("data-date-format"))
+            )
+        }).trigger("change");
+        ///
+$("#btn-search").click(() => {
+    $("#searchForm").slideToggle();
+});
+     $(".btn-test").click((element) => {
+            let id = $(element.target).attr("data-id");
+            let path = "/Test/ChangeTest/" + id;
+            $.ajax({
+                type: "GET",
+                url: path,
+                async: true,
+                //dataType: "json",
+                contentType: 'application/json',
+                success: (response) => {
+                    window.location.href = "/Test";
+                },
+                failure: function(response) {
+                    alert("Fail" + response.responseText);
+                },
+                error: function(response) {
+                    alert("Error" + response.responseText);
+                }
+            });
+        });
+    </script>
+}

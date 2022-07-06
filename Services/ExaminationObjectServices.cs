@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using WebPhongKham.Models.Entity;
 
@@ -17,10 +18,19 @@ namespace WebPhongKham.Services
             _examCollection = mongoDatabase.GetCollection<ExaminationObject>("examinationObjects");
         }
 
-        public async Task<List<ExaminationObject>> GetHealthTypesAsync() => await _examCollection.Find(_ => true).ToListAsync();
+        public async Task<List<ExaminationObject>> GetExamObjectsAsync() => await _examCollection.Find(_ => true).ToListAsync();
+
+        public async Task<ExaminationObject> GetAsync(string id) => await _examCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
         public async Task CreateAsync(ExaminationObject exam) => await _examCollection.InsertOneAsync(exam);
 
         public async Task DeleteAsync(string id) => await _examCollection.FindOneAndDeleteAsync(x => x.Id == id);
+
+        public async Task UpdatePriceAsync(string id, float price)
+        {
+            var filter = Builders<ExaminationObject>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<ExaminationObject>.Update.Set(s => s.Price, price);
+            await _examCollection.UpdateOneAsync(filter, update);
+        }
     }
 }

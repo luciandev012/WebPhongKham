@@ -35,7 +35,7 @@ namespace WebPhongKham.Controllers
                 Value = x.Name,
                 Text = x.Name
             });
-            var exams = await _examinationObjectServices.GetHealthTypesAsync();
+            var exams = await _examinationObjectServices.GetExamObjectsAsync();
             ViewBag.ExamObjects = exams.Select(x => new SelectListItem()
             {
                 Value = x.Name,

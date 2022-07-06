@@ -45,10 +45,10 @@
                                     @(Model.IsPaid ? "Đã thu tiền" : "Chưa thu tiền")
                                 </span>
                                 <span class="d-block">
-                                    @(Model.IsXray ? "Có chụp X-quang" : "Không chụp X-quang")
+                                    @(Model.IsXray ? Model.IsDoneXray ? "Đã chụp X-quang" : "Chưa chụp X-quang" : "Không chụp X-quang")
                                 </span>
                                 <span class="d-block">
-                                    @(Model.IsTest ? "Có xét nghiệm" : "Không xét nghiệm")
+                                    @(Model.IsTest ? Model.IsDoneTest? "Đã xét nghiệm" : "Chưa xét nghiệm" : "Không xét nghiệm")
                                 </span>
                             </td>
                         </tr>
