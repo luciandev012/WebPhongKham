@@ -4,7 +4,7 @@ using WebPhongKham.Services;
 
 namespace WebPhongKham.Controllers
 {
-    public class ExaminationController : Controller
+    public class ExaminationController : BaseController
     {
         private readonly ExaminationObjectServices _examServices;
 

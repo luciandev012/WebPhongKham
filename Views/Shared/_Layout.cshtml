@@ -27,24 +27,7 @@
                 </div>
                 <div class="header-block header-block-nav">
                     <ul class="nav-profile">
-                        <li class="notifications new">
-
-                            <div class="dropdown-menu notifications-dropdown-menu">
-                                <ul class="notifications-container">
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="profile dropdown">
-                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                               aria-haspopup="true" aria-expanded="false">
-                                <span class="name">Xin chào Trần Thị Liên</span>
-                            </a>
-                            <div class="dropdown-menu profile-dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <a class="dropdown-item" href="https://www.lien.coderoom.info/dang-xuat">
-                                    <i class="fa fa-power-off icon"></i> Đăng xuất
-                                </a>
-                            </div>
-                        </li>
+                        @await Component.InvokeAsync("UserInfo")
                     </ul>
                 </div>
             </header>
@@ -59,27 +42,12 @@
                                 <span class="l l3"></span>
                                 <span class="l l4"></span>
                                 <span class="l l5"></span>
-                            </div> khám sức khỏe
+                            </div> Khám sức khỏe
                         </div>
                     </div>
                     <nav class="menu">
                         <ul class="sidebar-menu metismenu" id="sidebar-menu">
-                            <li>
-                                <a asp-controller="HealthType">
-                                    <i class="fa-solid fa-kit-medical"></i> Sức khỏe
-                                </a>
-                            </li>
-                            <li class="active">
-                                <a asp-controller="Home">
-                                    <i class="fa-solid fa-user"></i> Tài Khoản
-                                </a>
-                            </li>
-
-                            <li>
-                                <a asp-controller="Examination">
-                                    <i class="fas fa-sliders-h"></i> Quản lý
-                                </a>
-                            </li>
+                            @await Component.InvokeAsync("Menu")
                         </ul>
                     </nav>
                 </div>

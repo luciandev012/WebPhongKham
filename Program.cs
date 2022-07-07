@@ -5,6 +5,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSession(option =>
+{
+    option.IdleTimeout = TimeSpan.FromMinutes(30);
+});
 builder.Services.Configure<MedicalDatabaseSettings>(builder.Configuration.GetSection("MedicalDatabase"));
 builder.Services.AddSingleton<UserServices>();
 builder.Services.AddSingleton<HealthTypeServices>();
@@ -27,7 +31,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
-
+app.UseSession();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

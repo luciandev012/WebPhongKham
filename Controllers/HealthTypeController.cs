@@ -4,7 +4,7 @@ using WebPhongKham.Services;
 
 namespace WebPhongKham.Controllers
 {
-    public class HealthTypeController : Controller
+    public class HealthTypeController : BaseController
     {
         private readonly HealthTypeServices _healthTypeServices;
 

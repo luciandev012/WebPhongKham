@@ -1,0 +1,30 @@
+﻿@using WebPhongKham.Models.Entity
+@model User
+
+@if (Model.Role == "Admin")
+{
+    <li>
+        <a asp-controller="HealthType">
+            <i class="fa-solid fa-kit-medical"></i> Sức khỏe
+        </a>
+    </li>
+    <li class="active">
+        <a asp-controller="Home">
+            <i class="fa-solid fa-user"></i> Tài Khoản
+        </a>
+    </li>
+
+    <li>
+        <a asp-controller="Examination">
+            <i class="fas fa-sliders-h"></i> Quản lý
+        </a>
+    </li>
+}
+else
+{
+    <li>
+        <a href="#">
+            <i class="fas fa-sliders-h"></i> Quản lý
+        </a>
+    </li>
+}

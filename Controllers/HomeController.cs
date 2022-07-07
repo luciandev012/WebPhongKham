@@ -7,7 +7,7 @@ using WebPhongKham.Services;
 
 namespace WebPhongKham.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly UserServices _userServices;
 
