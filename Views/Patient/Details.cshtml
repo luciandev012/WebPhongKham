@@ -1,6 +1,7 @@
 ﻿@using WebPhongKham.Models.Entity
 @{
     ViewData["Title"] = "Chi tiết bệnh nhân";
+    
 }
 @model Patient
 
@@ -23,6 +24,7 @@
                 </div>
             </div>
         </div>
+        <button type="button" class="btn btn-info" id="btnExcel" data-id="@Model.Id">Xuất file excel</button>
         <div class="row">
             <div class="col-md-12">
                 <h4 class="text-center mb-3">Danh sách phiếu khám</h4>
@@ -57,11 +59,23 @@
                     </tbody>
                 </table>
 
-@*                <a asp-controller="Patient" class="btn btn-primary mt-3">
-                    Về trang danh sách
+                @*                <a asp-controller="Patient" class="btn btn-primary mt-3">
+                Về trang danh sách
                 </a>*@
             </div>
         </div>
     </section>
 
 </article>
+
+@section scripts{
+    <script>
+        $("#btnExcel").click((element) => {
+                //console.log(element.target);
+                let id = $(element.target).attr("data-id");
+                //let path = "/Patient/DetailsJson/" + id;
+                window.location.href = "/Patient/ExportExcel/" + id;
+            });
+    
+    </script>
+}

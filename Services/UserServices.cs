@@ -57,5 +57,19 @@ namespace WebPhongKham.Services
             }
             return null;
         }
+
+        public async Task<bool> ChangePassAcsync(string id, string oldPass, string newPass)
+        {
+            var user = await _usersCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+            if(user != null && Bcrypt.Verify(oldPass, user.Password))
+            {
+                var filter = Builders<User>.Filter.Eq("_id", ObjectId.Parse(id));
+                var salt = Bcrypt.GenerateSalt(10);
+                var update = Builders<User>.Update.Set(s => s.Password, Bcrypt.HashPassword(newPass, salt));
+                await _usersCollection.UpdateOneAsync(filter, update);
+                return true;
+            }
+            return false;
+        }
     }
 }

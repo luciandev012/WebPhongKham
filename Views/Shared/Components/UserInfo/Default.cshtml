@@ -1,13 +1,19 @@
 ﻿@using WebPhongKham.Models.Entity
 @model User
-<li class="profile dropdown">
-    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+@if (Model != null)
+{
+    <li class="profile dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
        aria-haspopup="true" aria-expanded="false">
-        <span class="name">Xin chào @Model.FullName</span>
-    </a>
-    <div class="dropdown-menu profile-dropdown-menu" aria-labelledby="dropdownMenu1">
-        <a class="dropdown-item" asp-action="Logout" asp-controller="User">
-            <i class="fa fa-power-off icon"></i> Đăng xuất
+            <span class="name">Xin chào @Model.FullName</span>
         </a>
-    </div>
-</li>
+        <div class="dropdown-menu profile-dropdown-menu" aria-labelledby="dropdownMenu1">
+            <a class="dropdown-item" asp-action="Logout" asp-controller="User">
+                <i class="fa fa-power-off icon"></i> Đăng xuất
+            </a>
+            <a class="dropdown-item" asp-action="ChangePass" asp-controller="User" asp-route-id="@Model.Id">
+                <i class="fa fa-power-off icon"></i> Đổi mật khẩu
+            </a>
+        </div>
+    </li>
+}

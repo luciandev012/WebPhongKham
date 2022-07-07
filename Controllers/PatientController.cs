@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Json;
 using WebPhongKham.Models.Entity;
 using WebPhongKham.Services;
+using System.IO;
+using OfficeOpenXml;
+using System.Drawing;
+using System;
 
 namespace WebPhongKham.Controllers
 {
@@ -106,6 +110,73 @@ namespace WebPhongKham.Controllers
         {
             await _patientServices.DeleteAsync(id);
             return RedirectToAction("Index");
+        }
+
+        public async Task ExportExcel(string id)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            var patient = await _patientServices.GetPatientAsync(id);
+            ExcelPackage ep = new ExcelPackage();
+            ExcelWorksheet sheet = ep.Workbook.Worksheets.Add("Report");
+            //Format file
+            //sheet.Cells["B5:K8"].Merge = true;
+            //sheet.Cells["B5:L20"].Style.Font.Name = "Times New Roman"; sheet.Cells["B5:L20"].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+            //sheet.Cells["B5"].Style.Font.Bold = true;
+            //sheet.Cells["B5"].Style.Font.Size = 20;
+            //sheet.Cells["B5"].Style.Fill.BackgroundColor.SetColor(Color.Blue);
+            //sheet.Cells["B5"].Value = "Chi tiết người bệnh"; sheet.Cells["B5:K19"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            //sheet.Cells["B5:K19"].Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            //sheet.Cells["B5"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            //sheet.Cells["B5:K19"].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);
+            //sheet.Cells["B10:K19"].Style.Font.Size = 14;
+            //sheet.Cells["B10:C10"].Merge = true; sheet.Cells["B10"].Value = "Họ tên";
+            //sheet.Cells["D10:E10"].Merge = true; sheet.Cells["D10"].Value = patient.FullName;
+            //sheet.Cells["B11:C11"].Merge = true; sheet.Cells["B11"].Value = "CMND";
+            //sheet.Cells["D11:E11"].Merge = true; sheet.Cells["D11"].Value = patient.IdentityCode;
+            //sheet.Cells["B12:C12"].Merge = true; sheet.Cells["B12"].Value = "Ngày sinh";
+            //sheet.Cells["D12:E12"].Merge = true; sheet.Cells["D12"].Value = patient.DoB.ToString("dd-MM-yyyy");
+            ////
+            //sheet.Cells["B14:C15"].Merge = true; sheet.Cells["B14"].Value = "Ngày khám";
+            //sheet.Cells["B16:C19"].Merge = true; sheet.Cells["B16"].Value = patient.DoE.ToString("dd-MM-yyyy");
+            //sheet.Cells["D14:E15"].Merge = true; sheet.Cells["D14"].Value = "Loại khám";
+            //sheet.Cells["D16:E19"].Merge = true; sheet.Cells["D16"].Value = patient.HealthType;
+            //sheet.Cells["F14:G15"].Merge = true; sheet.Cells["F14"].Value = "Đối tượng";
+            //sheet.Cells["F16:G19"].Merge = true; sheet.Cells["F16"].Value = patient.ExamObject;
+            //sheet.Cells["H14:I15"].Merge = true; sheet.Cells["H14"].Value = "Thành tiền";
+            //var price = (await _examinationObjectServices.GetPriceAsync(patient.ExamObject)) + (await _healthServices.GetPriceAsync(patient.HealthType));
+            //sheet.Cells["H16:I19"].Merge = true; sheet.Cells["H16"].Value = String.Format("{0:n0}", price) + "VNĐ";
+            //sheet.Cells["J14:K15"].Merge = true;
+            //var res = patient.IsPaid ? "Đã thu tiền" : "Chưa thu tiền"; res += Environment.NewLine;
+            //res += patient.IsTest ? patient.IsDoneTest ? "Đã xét nghiệm" : "Chưa xét nghiệm" : "Không xét nghiệm"; res += Environment.NewLine;
+            //res += patient.IsXray ? patient.IsDoneXray ? "Đã chụp X-quang" : "Chưa chụp X-quang" : "Không chụp X-quang"; res += Environment.NewLine;
+            //sheet.Cells["J16:K19"].Merge = true; sheet.Cells["J16"].Value = res;
+            sheet.Cells["B2"].Value = "Họ tên";
+            sheet.Cells["C2"].Value = "CMND";
+            sheet.Cells["D2"].Value = "Ngày sinh";
+            sheet.Cells["E2"].Value = "Ngày khám";
+            sheet.Cells["F2"].Value = "Loại khám";
+            sheet.Cells["G2"].Value = "Đối tượng";
+            sheet.Cells["H2"].Value = "Thành tiền";
+            sheet.Cells["I2"].Value = "";
+            sheet.Cells["B3"].Value = patient.FullName;
+            sheet.Cells["C3"].Value = patient.IdentityCode;
+            sheet.Cells["D3"].Value = patient.DoB.ToString("dd-MM-yyyy");
+            sheet.Cells["E3"].Value = patient.DoE.ToString("dd-MM-yyyy");
+            sheet.Cells["F3"].Value = patient.HealthType;
+            sheet.Cells["G3"].Value = patient.ExamObject;
+            var price = (await _examinationObjectServices.GetPriceAsync(patient.ExamObject)) + (await _healthServices.GetPriceAsync(patient.HealthType));
+            sheet.Cells["H3"].Value = String.Format("{0:n0}", price) + "VNĐ";
+            var res = patient.IsPaid ? "Đã thu tiền" : "Chưa thu tiền"; res += Environment.NewLine;
+            res += patient.IsTest ? patient.IsDoneTest ? "Đã xét nghiệm" : "Chưa xét nghiệm" : "Không xét nghiệm"; res += Environment.NewLine;
+            res += patient.IsXray ? patient.IsDoneXray ? "Đã chụp X-quang" : "Chưa chụp X-quang" : "Không chụp X-quang"; res += Environment.NewLine;
+            sheet.Cells["I3"].Value = res;
+            sheet.Cells["A:AZ"].AutoFitColumns();
+            //var response = HttpContext.Current.Response;
+            Response.Clear();
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.Headers.Add("content-disposition", "attachment; filename=" + "Report.xlsx");
+            await Response.Body.WriteAsync(ep.GetAsByteArray());
+            Response.Body.Close();
         }
     }
 }
