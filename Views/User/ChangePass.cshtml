@@ -10,11 +10,12 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Page Title</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='~/css/user.css'>
+    
     <link rel='stylesheet' type='text/css' media='screen' href='~/lib/bootstrap/dist/css/bootstrap.min.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='~/css/user.css'>
 </head>
 <body>
-    <section class="h-100 gradient-form" style="background-color: #eee;">
+    <section class="h-100 gradient-form">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-xl-10">
@@ -26,24 +27,27 @@
                                     <div class="text-center">
                                         <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
                                              style="width: 185px;" alt="logo">
-                                        <h4 class="mt-1 mb-5 pb-1">Đổi mật khẩu</h4>
+                                        <h3 class="mt-1 mb-5 pb-1">Đổi mật khẩu</h3>
                                     </div>
 
-                                    <form asp-controller="User" asp-action="ChangePass" asp-route-id="@Model.Id" method="post">
+                                    <form asp-controller="User" asp-action="ChangePass" id="loginForm" asp-route-id="@Model.Id" method="post">
                                         <p>Xin chào @Model.FullName</p>
-                                        <p>Vui lòng điền mật khẩu cũ</p>
+                                        <h5>Vui lòng điền mật khẩu cũ</h5>
                                         <div class="form-outline mb-4">
-                                            <input name="passwordOld" type="password" id="passwordOld" class="form-control" />
                                             <label class="form-label" for="form2Example22">Mật khẩu cũ</label>
+                                            <input name="passwordOld" type="password" id="passwordOld" class="form-control" />
+                                            
                                         </div>
 
                                         <div class="form-outline mb-4">
-                                            <input name="passwordNew" type="password" id="passwordNew" class="form-control" />
                                             <label class="form-label" for="form2Example22">Mật khẩu mới</label>
+                                            <input name="passwordNew" type="password" id="passwordNew" class="form-control" />
+                                            
                                         </div>
                                         <div class="form-outline mb-4">
-                                            <input name="password" type="password" id="passwordCf" class="form-control" />
                                             <label class="form-label" for="form2Example22">Xác nhận mật khẩu mới</label>
+                                            <input name="passwordCf" type="password" id="passwordCf" class="form-control" />
+                                            
                                         </div>
                                         <div class="text-center pt-1 mb-5 pb-1">
                                             <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit">
@@ -66,4 +70,45 @@
         </div>
     </section>
 </body>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#loginForm").validate({
+            onfocusout: false,
+            onkeyup: false,
+            onclick: false,
+            rules: {
+                "passwordOld": {
+                    required: true,
+                    minlength: 4
+                },
+                "passwordNew": {
+                    required: true,
+                    minlength: 4
+                },
+                "passwordCf": {
+                    required: true,
+                    minlength: 4,
+                    equalTo: "#passwordNew"
+                }
+            },
+            messages: {
+                "passwordOld": {
+                    required: "Mật khẩu ít nhất 4 kí tự",
+                    minlength: "Mật khẩu ít nhất 4 kí tự"
+                },
+                "passwordNew": {
+                    required: "Mật khẩu ít nhất 4 kí tự",
+                    minlength: "Mật khẩu ít nhất 4 kí tự"
+                },
+                "passwordCf": {
+                    required: "Mật khẩu ít nhất 4 kí tự",
+                    minlength: "Mật khẩu ít nhất 4 kí tự",
+                    equalTo: "Mật khẩu không khớp"
+                }
+            },
+        });
+    });
+</script>
 </html>

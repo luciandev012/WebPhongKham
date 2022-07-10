@@ -33,6 +33,14 @@
             color: black;
             opacity: 1;
         }
+
+    .error {
+        color: red;
+        font-weight: normal;
+    }
+    .tx-w{
+        color: white;
+    }
 </style>
 
 <article class="content dashboard-page">
@@ -42,7 +50,7 @@
             Thêm bệnh nhân
         </button>
         <button class="btn btn-primary" id="btn-refresh" type="button">Làm mới</button>
-        <a class="btn btn-primary" id="btn-search"><i class="fa-solid fa-magnifying-glass"></i></a>
+        <a class="btn btn-primary" id="btn-search"><i class="fa-solid fa-magnifying-glass" style="color: white"></i></a>
 
         <div class="mb-3" id="searchForm" style="display: none">
             <form id="form_search" asp-controller="Patient" autocomplete="off">
@@ -85,10 +93,10 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="staticBackdropLabel">Thêm bệnh nhân</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
                     </div>
                     <div class="modal-body">
-                        <form asp-controller="Patient" asp-action="Create" method="post">
+                        <form asp-controller="Patient" asp-action="Create" id="formCreate" method="post">
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="fullName" class="form-label">Họ tên</label>
@@ -171,7 +179,7 @@
                                 <div class="form-group col-md-6">
                                     <label for="healthTypeEdit" class="form-label">Loại sức khỏe khám</label>
                                     <select name="healthType" id="healthTypeEdit" asp-items="@ViewBag.HealthTypes" class="form-control">
-                                        <option>--Chọn loại sức khỏe--</option>
+                                        <option value="">--Chọn loại sức khỏe--</option>
                                     </select>
                                 </div>
                             </div>
@@ -181,9 +189,9 @@
                                     <input id="dobEdit" name="dob" type="date" data-date="" data-date-format="DD/MM/YYYY" class="form-control date" />
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="healthTypeEdit" class="form-label">Loại sức khỏe</label>
+                                    <label for="examObject" class="form-label">Loại đối tượng</label>
                                     <select name="examObject" id="examObjectEdit" asp-items="@ViewBag.ExamObjects" class="form-control">
-                                        <option>--Chọn loại đối tượng--</option>
+                                        <option value="">--Chọn loại đối tượng--</option>
                                     </select>
                                 </div>
                             </div>
@@ -207,26 +215,27 @@
                 </div>
             </div>
         </div>
-        <table class="table table-bordered">
-            <thead>
+        <table class="max-w-4xl w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden">
+            <thead class="bg-gray-900">
                 <tr>
-                    <th scope="col">Họ tên</th>
-                    <th scope="col">Ngày sinh</th>
-                    <th scope="col">Loại khám</th>
-                    <th scope="col">Đối tượng khám</th>
-                    <th scope="col">Ngày khám</th>
+                    <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Họ tên</th>
+                    <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Ngày sinh</th>
+                    <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Loại khám</th>
+                    <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Đối tượng khám</th>
+                    <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Ngày khám</th>
+                    <th scope="col" class="font-semibold text-sm uppercase px-6 py-4"></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="divide-y divide-gray-200">
                 @foreach (var item in Model.Items)
                 {
                     <tr>
-                        <td>@item.FullName</td>
-                        <td>@item.DoB.ToString("dd-MM-yyyy")</td>
-                        <td>@item.HealthType</td>
-                        <td>@item.ExamObject</td>
-                        <td>@item.DoE.ToString("dd-MM-yyyy")</td>
-                        <td class="fit">
+                        <td class="px-6 py-4">@item.FullName</td>
+                        <td class="px-6 py-4">@item.DoB.ToString("dd-MM-yyyy")</td>
+                        <td class="px-6 py-4">@item.HealthType</td>
+                        <td class="px-6 py-4">@item.ExamObject</td>
+                        <td class="px-6 py-4">@item.DoE.ToString("dd-MM-yyyy")</td>
+                        <td class="fit px-6 py-4">
                             <a asp-controller="Patient" asp-action="Details" asp-route-id="@item.Id" target="_new" class="btn btn-info"><i class="fa-solid fa-eye"></i> Xem</a>
                             <button data-id="@item.Id" type="button" id="btnEdit" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" class="btn btn-secondary btn-edit"><i data-id="@item.Id" class="fa-solid fa-pen-to-square"></i> Sửa</button>
                             <a asp-controller="Patient" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</a>
@@ -250,7 +259,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script>
         $(document).ready(() => {
-            $("i").click(e => e.stopPropagation());
             $("#doe").on("change", function() {
                 this.setAttribute(
                     "data-date",
@@ -354,6 +362,61 @@
             $("#btn-search").click(() => {
                 $("#searchForm").slideToggle();
             });
-        })
+            function padTo2Digits(num) {
+                return num.toString().padStart(2, '0');
+            }
+
+            function formatDate(date) {
+                return [
+                    date.getFullYear(),
+                    padTo2Digits(date.getMonth() + 1),
+                    padTo2Digits(date.getDate()),
+
+                ].join('-');
+            }
+            $("#btn-refresh").click(() => {
+                $("#searchName").val("").change();
+                $("#searchType").val("").change();
+                $("#searchObject").val("").change();
+                let today = new Date();
+                $("#searchStart").val(formatDate(today)).change();
+                $("#searchEnd").val(formatDate(today)).change();
+            });
+            $("#formCreate, #formEdit").validate({
+                onfocusout: false,
+                onkeyup: false,
+                onclick: false,
+                rules: {
+                    "fullName": {
+                        required: true
+                    },
+                    "identityCode": {
+                        required: true,
+                        minlength: 9
+                    },
+                    "healthType": {
+                        validateType: true
+                    },
+                    "examObject": {
+                        validateObject: true
+                    }
+                },
+                messages: {
+                    "fullName": {
+                        required: "Tên bệnh nhân không được để trống"
+                    },
+                    "identityCode": {
+                        required: "CMND không được để trống",
+                        minlength: "CMND quá ngắn"
+                    }
+                },
+            });
+            $.validator.addMethod("validateObject", function(value, element) {
+                return this.optional(element) || !(value == "--Chọn loại đối tượng--");
+            }, "Bạn chưa chọn loại đối tượng");
+            $.validator.addMethod("validateType", function(value, element) {
+                return this.optional(element) || !(value == "--Chọn loại sức khỏe--");
+            }, "Bạn chưa chọn loại sức khỏe");
+        });
     </script>
 }

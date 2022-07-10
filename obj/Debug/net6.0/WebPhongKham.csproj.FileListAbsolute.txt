@@ -129,3 +129,8 @@ D:\WebPhongKham\bin\Debug\net6.0\EPPlus.dll
 D:\WebPhongKham\bin\Debug\net6.0\EPPlus.Interfaces.dll
 D:\WebPhongKham\bin\Debug\net6.0\EPPlus.System.Drawing.dll
 D:\WebPhongKham\bin\Debug\net6.0\Microsoft.IO.RecyclableMemoryStream.dll
+D:\TaiLieuHocTap\DotNetCore\WebPhongKham\bin\Debug\net6.0\BCrypt.Net-Next.dll
+D:\TaiLieuHocTap\DotNetCore\WebPhongKham\bin\Debug\net6.0\EPPlus.dll
+D:\TaiLieuHocTap\DotNetCore\WebPhongKham\bin\Debug\net6.0\EPPlus.Interfaces.dll
+D:\TaiLieuHocTap\DotNetCore\WebPhongKham\bin\Debug\net6.0\EPPlus.System.Drawing.dll
+D:\TaiLieuHocTap\DotNetCore\WebPhongKham\bin\Debug\net6.0\Microsoft.IO.RecyclableMemoryStream.dll

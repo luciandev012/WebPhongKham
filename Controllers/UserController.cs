@@ -13,6 +13,7 @@ namespace WebPhongKham.Controllers
         }
         public IActionResult Index()
         {
+            ViewBag.Error = TempData["error"];
             return View();
         }
 
@@ -22,6 +23,7 @@ namespace WebPhongKham.Controllers
             var result = await _userServices.LoginAsync(username, password);
             if(result == null)
             {
+                TempData["error"] = "Sai tên đăng nhập hoặc mật khẩu";
                 return RedirectToAction("Index");
             }
             else

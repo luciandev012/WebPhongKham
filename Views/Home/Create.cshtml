@@ -1,60 +1,134 @@
 ﻿@{
     ViewData["Title"] = "Create user page";
 }
+<style>
+    .error {
+        color: red;
+        font-weight: normal;
+    }
+</style>
 <div class="container-fluid px-1 py-5 mx-auto">
     <div class="row d-flex justify-content-center">
         <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
             <div class="card">
-                <h5 class="text-center mb-4">Thêm mới tài khoản</h5>
-                <form class="form-card" asp-controller="Home" asp-action="Create" method="post">
+                @*<h5 class="text-center mb-4">Thêm mới tài khoản</h5>*@
+                <form class="form-card" asp-controller="Home" asp-action="Create" method="post" id="formCreate">
                     <div class="row justify-content-between text-left">
                         <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3">Full name<span class="text-danger"> *</span></label>
-                            <input type="text" id="fname" name="fullName" placeholder="Enter your first name" onblur="validate(1)">
+                            <label class="form-control-label px-3">Họ tên<span class="text-danger"> *</span></label>
+                            <input type="text" id="fname" name="fullName" placeholder="Nhập họ tên" />
                         </div>
                         <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3">Username<span class="text-danger"> *</span></label>
-                            <input type="text" id="username" name="username" placeholder="Enter your username" onblur="validate(2)">
+                            <label class="form-control-label px-3">Tên đăng nhập<span class="text-danger"> *</span></label>
+                            <input type="text" id="username" name="username">
                         </div>
 
                     </div>
                     <div class="row justify-content-between text-left">
                         <div class="form-group col-sm-6 flex-column d-flex">
                             <label class="form-control-label px-3">Email<span class="text-danger"> *</span></label>
-                            <input type="text" id="email" name="email" placeholder="" onblur="validate(3)">
+                            <input type="text" id="email" name="email">
                         </div>
                         <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3">Phone number<span class="text-danger"> *</span></label>
-                            <input type="text" id="phone" name="phoneNumber" placeholder="" onblur="validate(4)">
-                        </div>
-                    </div>
-                    <div class="row justify-content-between text-left">
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3">Password<span class="text-danger"> *</span></label>
-                            <input type="password" id="password" name="password" placeholder="" onblur="validate(3)">
-                        </div>
-                        <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3">Confirm password<span class="text-danger"> *</span></label>
-                            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="" onblur="validate(4)">
+                            <label class="form-control-label px-3">Số điện thoại<span class="text-danger"> *</span></label>
+                            <input type="text" id="phone" name="phoneNumber">
                         </div>
                     </div>
                     <div class="row justify-content-between text-left">
                         <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3">Address</label>
-                            <input type="text" id="address" name="address" placeholder="Enter your address" onblur="validate(2)">
+                            <label class="form-control-label px-3">Mật khẩu<span class="text-danger"> *</span></label>
+                            <input type="password" id="password" name="password">
                         </div>
                         <div class="form-group col-sm-6 flex-column d-flex">
-                            <label class="form-control-label px-3">Role</label>
+                            <label class="form-control-label px-3">Xác nhận mật khẩu<span class="text-danger"> *</span></label>
+                            <input type="password" id="confirmPassword" name="confirmPassword">
+                        </div>
+                    </div>
+                    <div class="row justify-content-between text-left">
+                        <div class="form-group col-sm-6 flex-column d-flex">
+                            <label class="form-control-label px-3">Địa chỉ</label>
+                            <input type="text" id="address" name="address">
+                        </div>
+                        <div class="form-group col-sm-6 flex-column d-flex">
+                            <label class="form-control-label px-3">Quyền</label>
                             <select name="role" asp-items="@ViewBag.ListRoles" class="form-control">
-                                    <option>--Chọn role--</option>
+                                <option>--Chọn quyền--</option>
                             </select>
                         </div>
                     </div>
                     <div class="row justify-content-end">
-                        <div class="form-group col-sm-6"> <button type="submit" class="btn-block btn-primary">Thêm</button> </div>
+                        <div class="form-group col-sm-6"> <button type="submit" class="btn btn-primary mx-auto fa-lg gradient-custom-2 mb-3" style="border-color: #010280; padding: 20px;">Thêm</button> </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+@section scripts {
+    <script>
+        $("#formCreate").validate({
+            onfocusout: false,
+            onkeyup: false,
+            onclick: false,
+            rules: {
+                "username": {
+                    required: true
+                },
+                "password": {
+                    required: true,
+                    minlength: 4
+                },
+                "fullName": {
+                    required: true
+                },
+                "email": {
+                    required: true
+                },
+                "phoneNumber": {
+                    required: true
+                },
+                "confirmPassword": {
+                    required: true,
+                    equalTo: "#password",
+                    minLength: 4
+                },
+                "address": {
+                    required: true
+                },
+                "role": {
+                    validateRole: true
+                }
+            },
+            messages: {
+                "username": {
+                    required: "Tên đăng nhập không được để trống"
+                },
+                "password": {
+                    required: "Mật khẩu ít nhất 4 kí tự",
+                    minlength: "Mật khẩu ít nhất 4 kí tự"
+                },
+                "fullName": {
+                    required: "Tên không được để trống"
+                },
+                "email": {
+                    required: "Email không được để trống"
+                },
+                "phoneNumber": {
+                    required: "Số điện thoại không được để trống"
+                },
+                "confirmPassword": {
+                    required: "Mật khẩu ít nhất 4 kí tự",
+                    equalTo: "Mật khẩu không khớp",
+                    minLength: "Mật khẩu ít nhất 4 kí tự"
+                },
+                "address": {
+                    required: "Địa chỉ không được để trống"
+                }
+            },
+        });
+        $.validator.addMethod("validateRole", function(value, element) {
+            return this.optional(element) || !(value == "--Chọn quyền--");
+        }, "Bạn chưa chọn quyền");
+    </script>
+}

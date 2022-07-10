@@ -22,3 +22,9 @@
 .img-right{
     width: 100%;
 }
+.error{
+    color: red!important;
+}
+body{
+    background-image: url(../imgs/blue-gradient-abstract-background-empty-room-with-space-your-text-picture.jpg)!important;
+}

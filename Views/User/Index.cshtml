@@ -9,11 +9,12 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Page Title</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='~/css/user.css'>
+    
     <link rel='stylesheet' type='text/css' media='screen' href='~/lib/bootstrap/dist/css/bootstrap.min.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='~/css/user.css'>
 </head>
 <body>
-    <section class="h-100 gradient-form" style="background-color: #eee;">
+    <section class="h-100 gradient-form">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-xl-10">
@@ -25,28 +26,30 @@
                                     <div class="text-center">
                                         <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
                                              style="width: 185px;" alt="logo">
-                                        <h4 class="mt-1 mb-5 pb-1">Đăng nhập</h4>
+                                        <h3 class="mt-1 mb-5 pb-1">Đăng nhập</h3>
                                     </div>
 
-                                    <form asp-controller="User" asp-action="Login" method="post">
-                                        <p>Điền thông tin tài khoản</p>
-
+                                    <form asp-controller="User" id="loginForm" asp-action="Login" method="post">
+                                        <h5>Điền thông tin tài khoản</h5>
+                                        <div class="text-danger" id="msgAlert">@ViewBag.Error</div>
                                         <div class="form-outline mb-4">
+                                            <label class="form-label" for="form2Example11">Tài khoản</label>
                                             <input name="username" type="text" id="username" class="form-control"
                                                    placeholder="Username" />
-                                            <label class="form-label" for="form2Example11">Tài khoản</label>
+                                            
                                         </div>
 
                                         <div class="form-outline mb-4">
-                                            <input name="password" type="password" id="password" class="form-control" />
                                             <label class="form-label" for="form2Example22">Mật khẩu</label>
+                                            <input name="password" type="password" id="password" class="form-control" />
+                                            
                                         </div>
 
                                         <div class="text-center pt-1 mb-5 pb-1">
                                             <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" type="submit">
                                                 Đăng nhập
                                             </button>
-                                            <a class="text-muted" href="#!">Quên mật khẩu?</a>
+                                            @*<a class="text-muted" href="#!">Quên mật khẩu?</a>*@
                                         </div>
                                     </form>
 
@@ -64,4 +67,36 @@
         </div>
     </section>
 </body>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#loginForm").validate({
+            onfocusout: false,
+            onkeyup: false,
+            onclick: false,
+            rules: {
+                "username": {
+                    required: true
+                },
+                "password": {
+                    required: true,
+                    minlength: 4
+                }
+            },
+            messages: {
+                "username": {
+                    required: "Bạn phải nhập tên đăng nhập"
+                },
+                "password": {
+                    required: "Mật khẩu ít nhất 4 kí tự",
+                    minlength: "Mật khẩu ít nhất 4 kí tự"
+                }
+            },
+        });
+        setTimeout(() => {
+            $("#msgAlert").fadeOut('slow');
+        }, 1500);
+    });
+</script>
 </html>

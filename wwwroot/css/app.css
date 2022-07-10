@@ -373,10 +373,11 @@ pre {
   line-height: 1.2; }
   .btn, .btn:hover {
     color: #ffffff; }
-  .btn.btn-primary {
-    color: #212529;
-    background-color: #85CE36;
-    border-color: #85CE36; }
+    .btn.btn-primary {
+        color: #212529;
+        background: linear-gradient(to right, #1973D1, #135CC5, #0C3BAA, #061993, #010280);
+        border-color: #010280;
+    }
     .btn.btn-primary:hover {
       color: #fff;
       background-color: #72b22b;

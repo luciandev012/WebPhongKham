@@ -6,59 +6,77 @@
 
 <article class="content dashboard-page">
     <section class="section">
-        <p class="text-center display-4">
-            Đây là danh sách người dùng
-        </p>
-        <a asp-controller="Home" asp-action="Create" class="btn btn-primary">
-            <i class="fa-solid fa-user-plus"></i>
-            Thêm người dùng
-        </a>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col">Tên người dùng</th>
-                    <th scope="col">Tài khoản</th>
-                    <th scope="col">Số điện thoại</th>
-                    <th scope="col">Quyền tài khoản</th>
-                    <th scope="col">Trạng thái tài khoản</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.FullName</td>
-                        <td>@item.UserName</td>
-                        <td>@item.PhoneNumber</td>
-                        <td>@item.Role</td>
-                        <td>@(item.Status ? "Hoạt động" : "Không hoạt động")</td>
-                        <td class="fit">
-                            <a asp-controller="Home" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                                Sửa
-                            </a>
-                            @if (item.Status)
-                            {
-                                <a asp-controller="Home" asp-action="ChangeStatus" asp-route-id="@item.Id" class=" btn btn-danger">
-                                    <i class="fa-solid fa-user-lock"></i>
-                                    Khóa
-                                </a>
-                            }
-                            else
-                            {
-                                <a asp-controller="Home" asp-action="ChangeStatus" asp-route-id="@item.Id" class=" btn btn-success">
-                                   <i class="fa-solid fa-unlock"></i>
-                                    Mở khóa
-                                </a>
-                            }
+        <div class="min-h-screen">
+            <div class="overflow-x-auto w-full">
+                <div class="">
+                    <a asp-controller="Home" asp-action="Create" class="btn btn-primary mx-auto fa-lg gradient-custom-2 mb-3" style="border-color: #010280">
+                    <i class="fa-solid fa-user-plus"></i>
+                    Thêm người dùng
+                </a>
+                </div>
+                <table class="max-w-4xl w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden">
+                    <thead class="bg-gray-900">
+                        <tr class="text-white text-left">
+                            <th class="font-semibold text-sm uppercase px-6 py-4"> Tên người dùng </th>
+                            <th class="font-semibold text-sm uppercase px-6 py-4"> Tài khoản </th>
+                            <th class="font-semibold text-sm uppercase px-6 py-4 text-center"> Số điện thoại </th>
+                            <th class="font-semibold text-sm uppercase px-6 py-4 text-center"> Trạng thái </th>
+                            <th class="font-semibold text-sm uppercase px-6 py-4"> </th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center space-x-3">
+                                        <div>
+                                            <p> @item.FullName </p>
+                                            <p class="text-gray-500 text-sm font-semibold tracking-wide"> @item.Role </p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <p class=""> @item.UserName </p>
+                                </td>
 
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                                <td class="px-6 py-4 text-center"> @item.PhoneNumber </td>
+                                <td class="px-6 py-4 text-center">
+                                    @if (item.Status)
+                                    {
+                                        <span class="text-white text-sm w-1/3 pb-1 bg-green-600 font-semibold px-2 rounded-full"> Hoạt động </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-white text-sm w-1/3 pb-1 bg-red-600 font-semibold px-2 rounded-full"> Không hoạt động </span>
+                                    }
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <a asp-controller="Home" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                        Sửa
+                                    </a>
+                                    @if (item.Status)
+                                    {
+                                        <a asp-controller="Home" asp-action="ChangeStatus" asp-route-id="@item.Id" class=" btn btn-danger">
+                                            <i class="fa-solid fa-user-lock"></i>
+                                            Khóa
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="Home" asp-action="ChangeStatus" asp-route-id="@item.Id" class=" btn btn-success">
+                                            <i class="fa-solid fa-unlock"></i>
+                                            Mở khóa
+                                        </a>
+                                    }
 
-        <div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </section>
 
