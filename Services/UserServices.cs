@@ -50,7 +50,7 @@ namespace WebPhongKham.Services
 
         public async Task<User> LoginAsync(string username, string password)
         {
-            var user = await _usersCollection.Find(x => x.UserName == username).FirstOrDefaultAsync();
+            var user = await _usersCollection.Find(x => x.UserName == username && x.Status).FirstOrDefaultAsync();
             if(user != null && Bcrypt.Verify(password, user.Password))
             {
                 return user;

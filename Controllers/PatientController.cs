@@ -103,6 +103,8 @@ namespace WebPhongKham.Controllers
         {
             patient.DoB = DateTime.SpecifyKind(patient.DoB, DateTimeKind.Utc);
             patient.DoE = DateTime.SpecifyKind(patient.DoE, DateTimeKind.Utc);
+            patient.FullName = patient.FullName ?? "";
+            patient.IdentityCode = patient.IdentityCode ?? "";
             await _patientServices.UpdateAsync(id, patient);
             return RedirectToAction("Index");
         }

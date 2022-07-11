@@ -75,11 +75,11 @@
                 <div class="row">
                     <div class="col-md-3">
                         <label for="searchStart" class="form-label">Từ ngày</label>
-                        <input id="searchStart" name="searchStart" type="date" data-date="" data-date-format="DD/MM/YYYY" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control date" />
+                        <input id="searchStart" name="searchStart" type="date" data-date="" data-date-format="DD/MM/YYYY" value="2022-01-01" class="form-control date" />
                     </div>
                     <div class="col-md-3">
                         <label for="searchEnd" class="form-label">Đến ngày</label>
-                        <input id="searchEnd" name="searchEnd" type="date" data-date="" data-date-format="DD/MM/YYYY" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control date" />
+                        <input id="searchEnd" name="searchEnd" type="date" data-date="" data-date-format="DD/MM/YYYY" value="2024-01-01" class="form-control date" />
                     </div>
                     <div class="col-md-3" style="padding-top: 30px">
                         <button class="btn btn-success" type="submit" id="search">Tìm kiếm</button>
@@ -238,7 +238,7 @@
                         <td class="fit px-6 py-4">
                             <a asp-controller="Patient" asp-action="Details" asp-route-id="@item.Id" target="_new" class="btn btn-info"><i class="fa-solid fa-eye"></i> Xem</a>
                             <button data-id="@item.Id" type="button" id="btnEdit" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" class="btn btn-secondary btn-edit"><i data-id="@item.Id" class="fa-solid fa-pen-to-square"></i> Sửa</button>
-                            <a asp-controller="Patient" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</a>
+                            <a asp-controller="Patient" id="btnDelete" asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('Bạn có chắc chắn muốn xóa bệnh nhân này?')" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</a>
                             @if (item.IsPaid)
                             {
                                 <p><i class="fa-solid fa-check" style="color: green;"></i> Đã thu tiền</p>
@@ -378,9 +378,9 @@
                 $("#searchName").val("").change();
                 $("#searchType").val("").change();
                 $("#searchObject").val("").change();
-                let today = new Date();
-                $("#searchStart").val(formatDate(today)).change();
-                $("#searchEnd").val(formatDate(today)).change();
+                let start = new Date(2022, 1, 1); let end = new Date(2024, 1, 1);
+                $("#searchStart").val(formatDate(start)).change();
+                $("#searchEnd").val(formatDate(end)).change();
             });
             $("#formCreate, #formEdit").validate({
                 onfocusout: false,
@@ -418,5 +418,6 @@
                 return this.optional(element) || !(value == "--Chọn loại sức khỏe--");
             }, "Bạn chưa chọn loại sức khỏe");
         });
+
     </script>
 }

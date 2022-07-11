@@ -35,7 +35,7 @@ namespace WebPhongKham.Controllers
                     case "Tiep nhan": return RedirectToAction("Index", "Patient");
                     case "Ke toan": return RedirectToAction("Index", "Accountant");
                     case "Xet nghiem": return RedirectToAction("Index", "Test");
-                    case "X-quang": return RedirectToAction("Index", "Xray");
+                    case "X-Quang": return RedirectToAction("Index", "Xray");
                     default: return RedirectToAction("Index", "Home");
                 }
             }    

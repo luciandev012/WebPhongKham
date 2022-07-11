@@ -33,6 +33,9 @@
             color: black;
             opacity: 1;
         }
+        .tx-w{
+            color: white;
+        }
 </style>
 
 <article class="content dashboard-page">
@@ -63,11 +66,11 @@
                 <div class="row">
                     <div class="col-md-3">
                         <label for="searchStart" class="form-label">Từ ngày</label>
-                        <input id="searchStart" name="searchStart" type="date" data-date="" data-date-format="DD/MM/YYYY" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control date" />
+                        <input id="searchStart" name="searchStart" type="date" data-date="" data-date-format="DD/MM/YYYY" value="2022-01-01" class="form-control date" />
                     </div>
-                     <div class="col-md-3">
+                    <div class="col-md-3">
                         <label for="searchEnd" class="form-label">Đến ngày</label>
-                        <input id="searchEnd" name="searchEnd" type="date" data-date="" data-date-format="DD/MM/YYYY" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control date" />
+                        <input id="searchEnd" name="searchEnd" type="date" data-date="" data-date-format="DD/MM/YYYY" value="2024-01-01" class="form-control date" />
                     </div>
                     <div class="col-md-3" style="padding-top: 30px">
                         <button class="btn btn-success" type="submit" id="search">Tìm kiếm</button>
@@ -75,26 +78,27 @@
                 </div>
             </form>
         </div>
-        <table class="table table-bordered">
-            <thead>
+        <table class="max-w-4xl w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden">
+            <thead class="bg-gray-900">
                 <tr>
-                    <th scope="col">Họ tên</th>
-                    <th scope="col">Ngày sinh</th>
-                    <th scope="col">Loại khám</th>
-                    <th scope="col">Đối tượng khám</th>
-                    <th scope="col">Ngày khám</th>
+                    <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Họ tên</th>
+                    <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Ngày sinh</th>
+                    <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Loại khám</th>
+                    <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Đối tượng khám</th>
+                    <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Ngày khám</th>
+                    <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w"></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="divide-y divide-gray-200">
                 @foreach (var item in Model.Items)
                 {
                     <tr>
-                        <td>@item.FullName</td>
-                        <td>@item.DoB.ToString("dd-MM-yyyy")</td>
-                        <td>@item.HealthType</td>
-                        <td>@item.ExamObject</td>
-                        <td>@item.DoE.ToString("dd-MM-yyyy")</td>
-                        <td class="fit">
+                        <td class="px-6 py-4">@item.FullName</td>
+                        <td class="px-6 py-4">@item.DoB.ToString("dd-MM-yyyy")</td>
+                        <td class="px-6 py-4">@item.HealthType</td>
+                        <td class="px-6 py-4">@item.ExamObject</td>
+                        <td class="px-6 py-4">@item.DoE.ToString("dd-MM-yyyy")</td>
+                        <td class="fit px-6 py-4">
                             <a asp-controller="Patient" asp-action="Details" asp-route-id="@item.Id" target="_new" class="btn btn-info"><i class="fa-solid fa-eye"></i> Xem</a>
                             @if (!item.IsDoneXray)
                             {
@@ -115,43 +119,65 @@
 @section scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script>
-        /// Search date
-        $("#searchStart").on("change", function() {
-            this.setAttribute(
-                "data-date",
-                moment(this.value, "YYYY-MM-DD")
-                    .format(this.getAttribute("data-date-format"))
-            )
-        }).trigger("change");
-        $("#searchEnd").on("change", function() {
-            this.setAttribute(
-                "data-date",
-                moment(this.value, "YYYY-MM-DD")
-                    .format(this.getAttribute("data-date-format"))
-            )
-        }).trigger("change");
-        ///
-$("#btn-search").click(() => {
-    $("#searchForm").slideToggle();
-});
-     $(".btn-test").click((element) => {
-            let id = $(element.target).attr("data-id");
-            let path = "/Xray/ChangeXray/" + id;
-            $.ajax({
-                type: "GET",
-                url: path,
-                async: true,
-                //dataType: "json",
-                contentType: 'application/json',
-                success: (response) => {
-                    window.location.href = "/Xray";
-                },
-                failure: function(response) {
-                    alert("Fail" + response.responseText);
-                },
-                error: function(response) {
-                    alert("Error" + response.responseText);
-                }
+        $(document).ready(() => {
+            /// Search date
+            $("#searchStart").on("change", function() {
+                this.setAttribute(
+                    "data-date",
+                    moment(this.value, "YYYY-MM-DD")
+                        .format(this.getAttribute("data-date-format"))
+                )
+            }).trigger("change");
+            $("#searchEnd").on("change", function() {
+                this.setAttribute(
+                    "data-date",
+                    moment(this.value, "YYYY-MM-DD")
+                        .format(this.getAttribute("data-date-format"))
+                )
+            }).trigger("change");
+            ///
+            $("#btn-search").click(() => {
+                $("#searchForm").slideToggle();
+            });
+            $(".btn-test").click((element) => {
+                let id = $(element.target).attr("data-id");
+                let path = "/Xray/ChangeXray/" + id;
+                $.ajax({
+                    type: "GET",
+                    url: path,
+                    async: true,
+                    //dataType: "json",
+                    contentType: 'application/json',
+                    success: (response) => {
+                        window.location.href = "/Xray";
+                    },
+                    failure: function(response) {
+                        alert("Fail" + response.responseText);
+                    },
+                    error: function(response) {
+                        alert("Error" + response.responseText);
+                    }
+                });
+            });
+            function padTo2Digits(num) {
+                return num.toString().padStart(2, '0');
+            }
+
+            function formatDate(date) {
+                return [
+                    date.getFullYear(),
+                    padTo2Digits(date.getMonth() + 1),
+                    padTo2Digits(date.getDate()),
+
+                ].join('-');
+            }
+            $("#btn-refresh").click(() => {
+                $("#searchName").val("").change();
+                $("#searchType").val("").change();
+                $("#searchObject").val("").change();
+                let start = new Date(2022, 1, 1); let end = new Date(2024, 1, 1);
+                $("#searchStart").val(formatDate(start)).change();
+                $("#searchEnd").val(formatDate(end)).change();
             });
         });
     </script>
