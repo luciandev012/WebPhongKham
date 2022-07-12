@@ -420,13 +420,28 @@
             $.validator.addMethod("validateType", function(value, element) {
                 return this.optional(element) || !(value == "--Chọn loại sức khỏe--");
             }, "Bạn chưa chọn loại sức khỏe");
-            $("#showToday").change(function() {
+            if (localStorage.getItem("isChecked") == 'true') {
+                $("#showToday").prop("checked", true);
+            } else {
+                console.log("false check");
+                $("#showToday").prop("checked", false);
+            }
+            $("#showToday").click(function() {
                 let check = $("#showToday").prop('checked');
+                console.log(check);
                 if (check) {
-                    let start = new Date(); let end = new Date();
+                    let start = new Date(); let end = new Date(); end.setDate();
                     $("#searchStart").val(formatDate(start)).change();
                     $("#searchEnd").val(formatDate(end)).change();
                     $("#search").click();
+                    localStorage.setItem("isChecked", true);
+                }
+                else {
+                    let start = new Date(2022, 1, 1); let end = new Date(2024, 1, 1);
+                    $("#searchStart").val(formatDate(start)).change();
+                    $("#searchEnd").val(formatDate(end)).change();
+                    $("#search").click();
+                    localStorage.setItem("isChecked", false);
                 }
             })
         });
