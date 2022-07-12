@@ -218,42 +218,42 @@
         </div>
         <div>
             <table class="rounded-lg bg-white divide-y divide-gray-300 overflow-hidden" style="width: 100%; border-radius: 10px; overflow: scroll">
-            <thead class="bg-gray-900" style="background-color: #413F42">
-                <tr>
-                    <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Họ tên</th>
-                    <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Ngày sinh</th>
-                    <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Loại khám</th>
-                    <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Đối tượng khám</th>
-                    <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Ngày khám</th>
-                    <th scope="col" class="font-semibold text-sm uppercase px-6 py-4"></th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-                @foreach (var item in Model.Items)
-                {
+                <thead class="bg-gray-900" style="background-color: #413F42">
                     <tr>
-                        <td class="px-6 py-4">@item.FullName</td>
-                        <td class="px-6 py-4">@item.DoB.ToString("dd-MM-yyyy")</td>
-                        <td class="px-6 py-4">@item.HealthType</td>
-                        <td class="px-6 py-4">@item.ExamObject</td>
-                        <td class="px-6 py-4">@item.DoE.ToString("dd-MM-yyyy")</td>
-                        <td class="fit px-6 py-4">
-                            <a asp-controller="Patient" asp-action="Details" asp-route-id="@item.Id" target="_new" class="btn btn-info"><i class="fa-solid fa-eye"></i> Xem</a>
-                            <button data-id="@item.Id" type="button" id="btnEdit" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" class="btn btn-secondary btn-edit"><i data-id="@item.Id" class="fa-solid fa-pen-to-square"></i> Sửa</button>
-                            <a asp-controller="Patient" id="btnDelete" asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('Bạn có chắc chắn muốn xóa bệnh nhân này?')" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</a>
-                            @if (item.IsPaid)
-                            {
-                                <p><i class="fa-solid fa-check" style="color: green;"></i> Đã thu tiền</p>
-                            }
-                            else
-                            {
-                                <p><i class="fa-solid fa-xmark" style="color: red;"></i> Chưa thu tiền</p>
-                            }
-                        </td>
+                        <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Họ tên</th>
+                        <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Ngày sinh</th>
+                        <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Loại khám</th>
+                        <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Đối tượng khám</th>
+                        <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Ngày khám</th>
+                        <th scope="col" class="font-semibold text-sm uppercase px-6 py-4"></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td class="px-6 py-4">@item.FullName</td>
+                            <td class="px-6 py-4">@item.DoB.ToString("dd-MM-yyyy")</td>
+                            <td class="px-6 py-4">@item.HealthType</td>
+                            <td class="px-6 py-4">@item.ExamObject</td>
+                            <td class="px-6 py-4">@item.DoE.ToString("dd-MM-yyyy")</td>
+                            <td class="fit px-6 py-4">
+                                <a asp-controller="Patient" asp-action="Details" asp-route-id="@item.Id" target="_new" class="btn btn-info"><i class="fa-solid fa-eye"></i> Xem</a>
+                                <button data-id="@item.Id" type="button" id="btnEdit" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" class="btn btn-secondary btn-edit"><i data-id="@item.Id" class="fa-solid fa-pen-to-square"></i> Sửa</button>
+                                <a asp-controller="Patient" id="btnDelete" asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('Bạn có chắc chắn muốn xóa bệnh nhân này?')" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</a>
+                                @if (item.IsPaid)
+                                {
+                                    <p><i class="fa-solid fa-check" style="color: green;"></i> Đã thu tiền</p>
+                                }
+                                else
+                                {
+                                    <p><i class="fa-solid fa-xmark" style="color: red;"></i> Chưa thu tiền</p>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </section>
     @await Component.InvokeAsync("Paging", Model)
@@ -420,10 +420,16 @@
             $.validator.addMethod("validateType", function(value, element) {
                 return this.optional(element) || !(value == "--Chọn loại sức khỏe--");
             }, "Bạn chưa chọn loại sức khỏe");
+            $("#showToday").change(function() {
+                let check = $("#showToday").prop('checked');
+                if (check) {
+                    let start = new Date(); let end = new Date();
+                    $("#searchStart").val(formatDate(start)).change();
+                    $("#searchEnd").val(formatDate(end)).change();
+                    $("#search").click();
+                }
+            })
         });
-        $("#showToday").change(function() {
-            let check = this.val;
-            console.log(check);
-        })
+
     </script>
 }
