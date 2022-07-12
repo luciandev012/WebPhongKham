@@ -24,7 +24,7 @@ namespace WebPhongKham.Controllers
         }
 
         public async Task<IActionResult> Index(string searchName, string searchType, string searchObject, DateTime searchStart,
-            DateTime searchEnd, int pageIndex = 1, int pageSize = 2)
+            DateTime searchEnd, int pageIndex = 1, int pageSize = 5)
         {
             searchName = searchName ?? ""; //check null value: if null value = "", else value = value
             searchType = searchType ?? "";
