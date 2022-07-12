@@ -24,7 +24,7 @@ namespace WebPhongKham.Services
         {
             var res = await _patientCollection.Find(x => x.FullName.ToLower().Contains(name)
                                                         && x.HealthType.ToLower().Contains(type)
-                                                        && x.ExamObject.ToLower().Contains(obj)).ToListAsync();
+                                                        && x.ExamObject.ToLower().Contains(obj)).SortByDescending(x => x.DoE).ToListAsync();
             var patients = from p in res
                            where p.DoE.CompareTo(start) != -1 && p.DoE.CompareTo(end) != 1
                            select p;
@@ -44,7 +44,7 @@ namespace WebPhongKham.Services
             var res = await _patientCollection.Find(x => x.FullName.ToLower().Contains(name)
                                                         && x.HealthType.ToLower().Contains(type)
                                                         && x.ExamObject.ToLower().Contains(obj)
-                                                        && x.IsPaid && x.IsTest).ToListAsync();
+                                                        && x.IsPaid && x.IsTest).SortByDescending(x => x.DoE).ToListAsync();
             var patients = from p in res
                            where p.DoE.CompareTo(start) != -1 && p.DoE.CompareTo(end) != 1
                            select p;
@@ -64,7 +64,7 @@ namespace WebPhongKham.Services
             var res = await _patientCollection.Find(x => x.FullName.ToLower().Contains(name)
                                                         && x.HealthType.ToLower().Contains(type)
                                                         && x.ExamObject.ToLower().Contains(obj)
-                                                        && x.IsPaid && x.IsXray).ToListAsync();
+                                                        && x.IsPaid && x.IsXray).SortByDescending(x => x.DoE).ToListAsync();
             var patients = from p in res
                            where p.DoE.CompareTo(start) != -1 && p.DoE.CompareTo(end) != 1
                            select p;

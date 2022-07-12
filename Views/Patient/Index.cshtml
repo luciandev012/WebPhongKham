@@ -51,7 +51,8 @@
         </button>
         <button class="btn btn-primary" id="btn-refresh" type="button">Làm mới</button>
         <a class="btn btn-primary" id="btn-search"><i class="fa-solid fa-magnifying-glass" style="color: white"></i></a>
-
+        <input type="checkbox" name="checkShowToday" id="showToday" />
+        <label for="checkShowToday">Hiển thị bệnh nhân ngày hôm nay</label>
         <div class="mb-3" id="searchForm" style="display: none">
             <form id="form_search" asp-controller="Patient" autocomplete="off">
                 <div class="row">
@@ -215,8 +216,9 @@
                 </div>
             </div>
         </div>
-        <table class="max-w-4xl w-full whitespace-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden">
-            <thead class="bg-gray-900">
+        <div>
+            <table class="rounded-lg bg-white divide-y divide-gray-300 overflow-hidden" style="width: 100%; border-radius: 10px; overflow: scroll">
+            <thead class="bg-gray-900" style="background-color: #413F42">
                 <tr>
                     <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Họ tên</th>
                     <th scope="col" class="font-semibold text-sm uppercase px-6 py-4 tx-w">Ngày sinh</th>
@@ -252,6 +254,7 @@
                 }
             </tbody>
         </table>
+        </div>
     </section>
     @await Component.InvokeAsync("Paging", Model)
 </article>
@@ -418,6 +421,9 @@
                 return this.optional(element) || !(value == "--Chọn loại sức khỏe--");
             }, "Bạn chưa chọn loại sức khỏe");
         });
-
+        $("#showToday").change(function() {
+            let check = this.val;
+            console.log(check);
+        })
     </script>
 }

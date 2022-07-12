@@ -9,5 +9,6 @@
             "Xet nghiem",
             "X-Quang"
         };
+        public static readonly int PAGE_SIZE = 5;
     }
 }
