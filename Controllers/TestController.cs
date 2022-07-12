@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using OfficeOpenXml;
 using WebPhongKham.Services;
 
 namespace WebPhongKham.Controllers
@@ -53,6 +54,47 @@ namespace WebPhongKham.Controllers
         {
             await _patientServices.ChangeTestStatus(id);
             return RedirectToAction("Index");
+        }
+        public async Task ExportExcel(string exam, string type, DateTime start, DateTime end)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            exam = exam ?? "";
+            type = type ?? "";
+            var patients = await _patientServices.GetPatientsTestForExportAsync(exam, type, start, end);
+            ExcelPackage ep = new ExcelPackage();
+            ExcelWorksheet sheet = ep.Workbook.Worksheets.Add("Report");
+            sheet.Cells["B2"].Value = "Họ tên";
+            sheet.Cells["C2"].Value = "CMND";
+            sheet.Cells["D2"].Value = "Ngày sinh";
+            sheet.Cells["E2"].Value = "Ngày khám";
+            sheet.Cells["F2"].Value = "Loại khám";
+            sheet.Cells["G2"].Value = "Đối tượng";
+            sheet.Cells["H2"].Value = "Thành tiền";
+            sheet.Cells["I2"].Value = "Trạng thái";
+            int index = 3;
+            foreach (var patient in patients)
+            {
+                sheet.Cells[$"B{index}"].Value = patient.FullName;
+                sheet.Cells[$"C{index}"].Value = patient.IdentityCode;
+                sheet.Cells[$"D{index}"].Value = patient.DoB.ToString("dd-MM-yyyy");
+                sheet.Cells[$"E{index}"].Value = patient.DoE.ToString("dd-MM-yyyy");
+                sheet.Cells[$"F{index}"].Value = patient.HealthType;
+                sheet.Cells[$"G{index}"].Value = patient.ExamObject;
+                var price = (await _examinationObjectServices.GetPriceAsync(patient.ExamObject)) + (await _healthServices.GetPriceAsync(patient.HealthType));
+                sheet.Cells[$"H{index}"].Value = String.Format("{0:n0}", price) + "VNĐ";
+                var res = patient.IsPaid ? "Đã thu tiền" : "Chưa thu tiền"; res += Environment.NewLine;
+                res += patient.IsTest ? patient.IsDoneTest ? "Đã xét nghiệm" : "Chưa xét nghiệm" : "Không xét nghiệm"; res += Environment.NewLine;
+                res += patient.IsXray ? patient.IsDoneXray ? "Đã chụp X-quang" : "Chưa chụp X-quang" : "Không chụp X-quang"; res += Environment.NewLine;
+                sheet.Cells[$"I{index}"].Value = res;
+                index++;
+            }
+            sheet.Cells["A:AZ"].AutoFitColumns();
+            //var response = HttpContext.Current.Response;
+            Response.Clear();
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.Headers.Add("content-disposition", "attachment; filename=" + "Report.xlsx");
+            await Response.Body.WriteAsync(ep.GetAsByteArray());
+            Response.Body.Close();
         }
     }
 }

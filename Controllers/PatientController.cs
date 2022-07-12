@@ -114,10 +114,12 @@ namespace WebPhongKham.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task ExportExcel(string id)
+        public async Task ExportExcel(string exam, string type, DateTime start, DateTime end)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            var patient = await _patientServices.GetPatientAsync(id);
+            exam = exam ?? "";
+            type = type ?? "";
+            var patients = await _patientServices.GetPatientsForExportAsync(exam, type, start, end);
             ExcelPackage ep = new ExcelPackage();
             ExcelWorksheet sheet = ep.Workbook.Worksheets.Add("Report");
             //Format file
@@ -159,19 +161,24 @@ namespace WebPhongKham.Controllers
             sheet.Cells["F2"].Value = "Loại khám";
             sheet.Cells["G2"].Value = "Đối tượng";
             sheet.Cells["H2"].Value = "Thành tiền";
-            sheet.Cells["I2"].Value = "";
-            sheet.Cells["B3"].Value = patient.FullName;
-            sheet.Cells["C3"].Value = patient.IdentityCode;
-            sheet.Cells["D3"].Value = patient.DoB.ToString("dd-MM-yyyy");
-            sheet.Cells["E3"].Value = patient.DoE.ToString("dd-MM-yyyy");
-            sheet.Cells["F3"].Value = patient.HealthType;
-            sheet.Cells["G3"].Value = patient.ExamObject;
-            var price = (await _examinationObjectServices.GetPriceAsync(patient.ExamObject)) + (await _healthServices.GetPriceAsync(patient.HealthType));
-            sheet.Cells["H3"].Value = String.Format("{0:n0}", price) + "VNĐ";
-            var res = patient.IsPaid ? "Đã thu tiền" : "Chưa thu tiền"; res += Environment.NewLine;
-            res += patient.IsTest ? patient.IsDoneTest ? "Đã xét nghiệm" : "Chưa xét nghiệm" : "Không xét nghiệm"; res += Environment.NewLine;
-            res += patient.IsXray ? patient.IsDoneXray ? "Đã chụp X-quang" : "Chưa chụp X-quang" : "Không chụp X-quang"; res += Environment.NewLine;
-            sheet.Cells["I3"].Value = res;
+            sheet.Cells["I2"].Value = "Trạng thái";
+            int index = 3;
+            foreach (var patient in patients)
+            {
+                sheet.Cells[$"B{index}"].Value = patient.FullName;
+                sheet.Cells[$"C{index}"].Value = patient.IdentityCode;
+                sheet.Cells[$"D{index}"].Value = patient.DoB.ToString("dd-MM-yyyy");
+                sheet.Cells[$"E{index}"].Value = patient.DoE.ToString("dd-MM-yyyy");
+                sheet.Cells[$"F{index}"].Value = patient.HealthType;
+                sheet.Cells[$"G{index}"].Value = patient.ExamObject;
+                var price = (await _examinationObjectServices.GetPriceAsync(patient.ExamObject)) + (await _healthServices.GetPriceAsync(patient.HealthType));
+                sheet.Cells[$"H{index}"].Value = String.Format("{0:n0}", price) + "VNĐ";
+                var res = patient.IsPaid ? "Đã thu tiền" : "Chưa thu tiền"; res += Environment.NewLine;
+                res += patient.IsTest ? patient.IsDoneTest ? "Đã xét nghiệm" : "Chưa xét nghiệm" : "Không xét nghiệm"; res += Environment.NewLine;
+                res += patient.IsXray ? patient.IsDoneXray ? "Đã chụp X-quang" : "Chưa chụp X-quang" : "Không chụp X-quang"; res += Environment.NewLine;
+                sheet.Cells[$"I{index}"].Value = res;
+                index++;
+            }
             sheet.Cells["A:AZ"].AutoFitColumns();
             //var response = HttpContext.Current.Response;
             Response.Clear();

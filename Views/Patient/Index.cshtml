@@ -53,6 +53,7 @@
         <a class="btn btn-primary" id="btn-search"><i class="fa-solid fa-magnifying-glass" style="color: white"></i></a>
         <input type="checkbox" name="checkShowToday" id="showToday" />
         <label for="checkShowToday">Hiển thị bệnh nhân ngày hôm nay</label>
+        <button type="button" class="btn btn-primary" id="btnExcel">Xuất file excel</button>
         <div class="mb-3" id="searchForm" style="display: none">
             <form id="form_search" asp-controller="Patient" autocomplete="off">
                 <div class="row">
@@ -446,6 +447,13 @@
                 }
             })
         });
-
+         $("#btnExcel").click((element) => {
+             let exam = $("#searchObject").val();
+             let type = $("#searchType").val();
+             let start = $("#searchStart").val();
+             let end = $("#searchEnd").val();
+                window.location.href = "/Patient/ExportExcel/?exam="+exam+"&type="+type+"&start="+start+"&end="+end+"";
+            });
+    
     </script>
 }

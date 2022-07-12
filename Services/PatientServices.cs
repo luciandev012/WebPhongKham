@@ -122,5 +122,32 @@ namespace WebPhongKham.Services
             var update = Builders<Patient>.Update.Set(s => s.IsDoneXray, !patient.IsDoneXray);
             await _patientCollection.UpdateOneAsync(filter, update);
         }
+        public async Task<List<Patient>> GetPatientsForExportAsync(string exam, string type, DateTime start, DateTime end)
+        {
+            var res = await _patientCollection.Find(x => x.HealthType.ToLower().Contains(type)
+                                                        && x.ExamObject.ToLower().Contains(exam)).SortByDescending(x => x.DoE).ToListAsync();
+            var patients = from p in res
+                           where p.DoE.CompareTo(start) != -1 && p.DoE.CompareTo(end) != 1
+                           select p;
+            return patients.ToList();
+        }
+        public async Task<List<Patient>> GetPatientsTestForExportAsync(string exam, string type, DateTime start, DateTime end)
+        {
+            var res = await _patientCollection.Find(x => x.HealthType.ToLower().Contains(type)
+                                                        && x.ExamObject.ToLower().Contains(exam) && x.IsPaid && x.IsTest).SortByDescending(x => x.DoE).ToListAsync();
+            var patients = from p in res
+                           where p.DoE.CompareTo(start) != -1 && p.DoE.CompareTo(end) != 1
+                           select p;
+            return patients.ToList();
+        }
+        public async Task<List<Patient>> GetPatientsXrayForExportAsync(string exam, string type, DateTime start, DateTime end)
+        {
+            var res = await _patientCollection.Find(x => x.HealthType.ToLower().Contains(type)
+                                                        && x.ExamObject.ToLower().Contains(exam) && x.IsPaid && x.IsXray).SortByDescending(x => x.DoE).ToListAsync();
+            var patients = from p in res
+                           where p.DoE.CompareTo(start) != -1 && p.DoE.CompareTo(end) != 1
+                           select p;
+            return patients.ToList();
+        }
     }
 }

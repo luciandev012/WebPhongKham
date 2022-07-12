@@ -24,7 +24,6 @@
                 </div>
             </div>
         </div>
-        <button type="button" class="btn btn-info" id="btnExcel" data-id="@Model.Id">Xuất file excel</button>
         <div class="row">
             <div class="col-md-12">
                 <h4 class="text-center mb-3" style="font-weight:500; font-size:1.5rem;">Danh sách phiếu khám</h4>
@@ -70,12 +69,6 @@
 
 @section scripts{
     <script>
-        $("#btnExcel").click((element) => {
-                //console.log(element.target);
-                let id = $(element.target).attr("data-id");
-                //let path = "/Patient/DetailsJson/" + id;
-                window.location.href = "/Patient/ExportExcel/" + id;
-            });
-    
+       
     </script>
 }
