@@ -262,6 +262,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script>
         $(document).ready(() => {
+            $("i").click(e => e.stopPropagation());
             $("#doe").on("change", function() {
                 this.setAttribute(
                     "data-date",
@@ -324,8 +325,8 @@
                 cb.val(cb.prop('checked'));
             });
             $(".btn-edit").click((element) => {
-                console.log(element.target);
-                let id = $(element.target).attr("data-id");
+                console.log(element.currentTarget);
+                let id = $(element.currentTarget).attr("data-id");
                 let path = "/Patient/DetailsJson/" + id;
                 $.ajax({
                     type: "GET",

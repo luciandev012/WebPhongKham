@@ -26,6 +26,13 @@ namespace WebPhongKham.Services
 
         public async Task DeleteAsync(string id) => await _examCollection.FindOneAndDeleteAsync(x => x.Id == id);
 
+        public async Task EditAsync(string name, string id)
+        {
+            var filter = Builders<ExaminationObject>.Filter.Eq("_id", ObjectId.Parse(id));
+            var update = Builders<ExaminationObject>.Update.Set(s => s.Name, name);
+            await _examCollection.UpdateOneAsync(filter, update);
+        }
+
         public async Task UpdatePriceAsync(string id, float price)
         {
             var filter = Builders<ExaminationObject>.Filter.Eq("_id", ObjectId.Parse(id));

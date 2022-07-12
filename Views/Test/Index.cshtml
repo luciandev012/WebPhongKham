@@ -141,7 +141,7 @@
                 $("#searchForm").slideToggle();
             });
             $(".btn-test").click((element) => {
-                let id = $(element.target).attr("data-id");
+                let id = $(element.currentTarget).attr("data-id");
                 let path = "/Test/ChangeTest/" + id;
                 $.ajax({
                     type: "GET",

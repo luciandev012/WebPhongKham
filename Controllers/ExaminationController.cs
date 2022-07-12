@@ -31,7 +31,20 @@ namespace WebPhongKham.Controllers
                 return RedirectToAction("Index");
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> Edit(ExaminationObject healthType, string id)
+        {
+            try
+            {
+                await _examServices.EditAsync(healthType.Name, id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
 
+                return RedirectToAction("Index");
+            }
+        }
         public async Task<IActionResult> Delete(string id)
         {
             try

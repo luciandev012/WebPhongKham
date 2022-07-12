@@ -145,7 +145,7 @@
                 $("#searchForm").slideToggle();
             });
             $(".btn-paid").click((element) => {
-                let id = $(element.target).attr("data-id");
+                let id = $(element.currentTarget).attr("data-id");
                 let path = "/Accountant/ChangePaid/" + id;
                 $.ajax({
                     type: "GET",
