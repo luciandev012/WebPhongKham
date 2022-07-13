@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\TaiLieuHocTap\\DotNetCore\\WebPhongKham\\WebPhongKham.csproj": {}
+    "D:\\WebPhongKham\\WebPhongKham.csproj": {}
   },
   "projects": {
-    "D:\\TaiLieuHocTap\\DotNetCore\\WebPhongKham\\WebPhongKham.csproj": {
+    "D:\\WebPhongKham\\WebPhongKham.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\TaiLieuHocTap\\DotNetCore\\WebPhongKham\\WebPhongKham.csproj",
+        "projectUniqueName": "D:\\WebPhongKham\\WebPhongKham.csproj",
         "projectName": "WebPhongKham",
-        "projectPath": "D:\\TaiLieuHocTap\\DotNetCore\\WebPhongKham\\WebPhongKham.csproj",
-        "packagesPath": "C:\\Users\\thang\\.nuget\\packages\\",
-        "outputPath": "D:\\TaiLieuHocTap\\DotNetCore\\WebPhongKham\\obj\\",
+        "projectPath": "D:\\WebPhongKham\\WebPhongKham.csproj",
+        "packagesPath": "C:\\Users\\bios\\.nuget\\packages\\",
+        "outputPath": "D:\\WebPhongKham\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\thang\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\bios\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -52,6 +52,26 @@
               "target": "Package",
               "version": "[6.4.4, )"
             },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.7, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.7, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[6.0.7, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.7, )"
+            },
             "MongoDB.Driver": {
               "target": "Package",
               "version": "[2.16.1, )"
@@ -75,7 +95,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     }

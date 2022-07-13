@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using System.Configuration;
+using WebPhongKham.Models;
 using WebPhongKham.Models.Entity;
 using WebPhongKham.Services;
 
@@ -9,11 +12,12 @@ builder.Services.AddSession(option =>
 {
     option.IdleTimeout = TimeSpan.FromMinutes(30);
 });
-builder.Services.Configure<MedicalDatabaseSettings>(builder.Configuration.GetSection("MedicalDatabase"));
-builder.Services.AddSingleton<UserServices>();
-builder.Services.AddSingleton<HealthTypeServices>();
-builder.Services.AddSingleton<ExaminationObjectServices>();
-builder.Services.AddSingleton<PatientServices>();
+var connectionString = builder.Configuration.GetConnectionString("Connection");
+builder.Services.AddDbContext<MedicalDbContext>(x => x.UseSqlServer(connectionString));
+builder.Services.AddTransient<UserServices>();
+builder.Services.AddTransient<HealthTypeServices>();
+builder.Services.AddTransient<ExaminationObjectServices>();
+builder.Services.AddTransient<PatientServices>();
 
 var app = builder.Build();
 

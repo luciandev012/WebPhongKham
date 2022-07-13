@@ -1,41 +1,52 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using WebPhongKham.Models;
 using WebPhongKham.Models.Entity;
 
 namespace WebPhongKham.Services
 {
     public class HealthTypeServices
     {
-        private readonly IMongoCollection<HealthType> _healthCollection;
+        private readonly MedicalDbContext _context;
 
-        public HealthTypeServices(IOptions<MedicalDatabaseSettings> medicalDB)
+        public HealthTypeServices(MedicalDbContext context)
         {
-            var mongoClient = new MongoClient(medicalDB.Value.ConnectionString);
-
-            var mongoDatabase = mongoClient.GetDatabase(medicalDB.Value.DatabaseName);
-
-            _healthCollection = mongoDatabase.GetCollection<HealthType>("healthTypes");
+            _context = context;
         }
 
-        public async Task<List<HealthType>> GetHealthTypesAsync() => await _healthCollection.Find(_ => true).ToListAsync();
+        public async Task<List<HealthType>> GetHealthTypesAsync() => await _context.HealthTypes.ToListAsync();
 
-        public async Task CreateAsync(HealthType healthType) => await _healthCollection.InsertOneAsync(healthType);
+        public async Task CreateAsync(HealthType healthType)
+        {
+            healthType.Id = Guid.NewGuid().ToString();
+            await _context.HealthTypes.AddAsync(healthType);
+            await _context.SaveChangesAsync();
+        }
 
-        public async Task DeleteAsync(string id) => await _healthCollection.FindOneAndDeleteAsync(x => x.Id == id);
-        public async Task<HealthType> GetAsync(string id) => await _healthCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+        public async Task DeleteAsync(string id) 
+        {
+            var ht = await _context.HealthTypes.FindAsync(id);
+            _context.HealthTypes.Remove(ht);
+            await _context.SaveChangesAsync();
+        }
+        public async Task<HealthType> GetAsync(string id)
+        {
+            return await _context.HealthTypes.FindAsync(id);
+        }
         public async Task EditAsync(string name, string id)
         {
-            var filter = Builders<HealthType>.Filter.Eq("_id", ObjectId.Parse(id));
-            var update = Builders<HealthType>.Update.Set(s => s.Name, name);
-            await _healthCollection.UpdateOneAsync(filter, update);
+            var ht = await _context.HealthTypes.FindAsync(id);
+            ht.Name = name;
+            await _context.SaveChangesAsync();
         }
         public async Task UpdatePriceAsync(string id, float price)
         {
-            var filter = Builders<HealthType>.Filter.Eq("_id", ObjectId.Parse(id));
-            var update = Builders<HealthType>.Update.Set(s => s.Price, price);
-            await _healthCollection.UpdateOneAsync(filter, update);
+            var ht = await _context.HealthTypes.FindAsync(id);
+            ht.Price = price;
+            await _context.SaveChangesAsync();
         }
-        public async Task<float> GetPriceAsync(string name) => (await _healthCollection.Find(x => x.Name == name).FirstOrDefaultAsync()).Price;
+        public async Task<float> GetPriceAsync(string name) => (await _context.HealthTypes.Where(x => x.Name == name).FirstOrDefaultAsync()).Price;
     }
 }

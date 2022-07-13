@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using WebPhongKham.Models;
 using WebPhongKham.Models.Entity;
 using Bcrypt = BCrypt.Net.BCrypt;
 
@@ -8,49 +10,45 @@ namespace WebPhongKham.Services
 {
     public class UserServices
     {
-        private readonly IMongoCollection<User> _usersCollection;
+        private readonly MedicalDbContext _context;
         
-        public UserServices(IOptions<MedicalDatabaseSettings> medicalDB)
+        public UserServices(MedicalDbContext context)
         {
-            var mongoClient = new MongoClient(medicalDB.Value.ConnectionString);
-
-            var mongoDatabase = mongoClient.GetDatabase(medicalDB.Value.DatabaseName);
-
-            _usersCollection = mongoDatabase.GetCollection<User>("users");
+            _context = context;
         }
 
-        public async Task<List<User>> GetUsersAsync() => await _usersCollection.Find(_ => true).ToListAsync();
+        public async Task<List<User>> GetUsersAsync() => await _context.Users.ToListAsync();
 
-        public async Task<User> GetUserAsync(string id) => await _usersCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+        public async Task<User> GetUserAsync(string id) => await _context.Users.FindAsync(id);
 
         public async Task CreateUserAsync(User user)
         {
             var salt = Bcrypt.GenerateSalt(10);
             user.Password = Bcrypt.HashPassword(user.Password, salt);
-            await _usersCollection.InsertOneAsync(user);
+            user.Id = Guid.NewGuid().ToString();
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
         }
         public async Task UpdateUserAsync(string id, User user)
         {
-            var filter = Builders<User>.Filter.Eq("_id", ObjectId.Parse(id));
-            var update = Builders<User>.Update.Set(s => s.FullName, user.FullName)
-                                              .Set(s => s.Address, user.Address)
-                                              .Set(s => s.Email, user.Email)
-                                              .Set(s => s.PhoneNumber, user.PhoneNumber)
-                                              .Set(s => s.Role, user.Role);
-            await _usersCollection.UpdateOneAsync(filter, update);                             
+            var res = await _context.Users.FindAsync(id);
+            res.Address = user.Address;
+            res.PhoneNumber = user.PhoneNumber;
+            res.Email = user.Email;
+            res.FullName = user.FullName;
+            await _context.SaveChangesAsync();
         }
         
         public async Task ChangeUserStatus(string id)
         {
-            var user = await _usersCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
-            var filter = Builders<User>.Filter.Eq("_id", ObjectId.Parse(id));
-            var update = Builders<User>.Update.Set(s => s.Status, !user.Status);
-            await _usersCollection.UpdateOneAsync(filter, update);
+            var res = await _context.Users.FindAsync(id);
+            res.Status = !res.Status;
+            await _context.SaveChangesAsync();
         }
 
         public async Task<User> LoginAsync(string username, string password)
         {
-            var user = await _usersCollection.Find(x => x.UserName == username && x.Status).FirstOrDefaultAsync();
+            var user = await _context.Users.Where(x => x.UserName == username && x.Status).FirstOrDefaultAsync();
             if(user != null && Bcrypt.Verify(password, user.Password))
             {
                 return user;
@@ -60,13 +58,12 @@ namespace WebPhongKham.Services
 
         public async Task<bool> ChangePassAcsync(string id, string oldPass, string newPass)
         {
-            var user = await _usersCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+            var user = await _context.Users.FindAsync(id);
             if(user != null && Bcrypt.Verify(oldPass, user.Password))
             {
-                var filter = Builders<User>.Filter.Eq("_id", ObjectId.Parse(id));
                 var salt = Bcrypt.GenerateSalt(10);
-                var update = Builders<User>.Update.Set(s => s.Password, Bcrypt.HashPassword(newPass, salt));
-                await _usersCollection.UpdateOneAsync(filter, update);
+                user.Password = Bcrypt.HashPassword(newPass, salt);
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;

@@ -156,27 +156,29 @@ namespace WebPhongKham.Controllers
             //sheet.Cells["J16:K19"].Merge = true; sheet.Cells["J16"].Value = res;
             sheet.Cells["B2"].Value = "Họ tên";
             sheet.Cells["C2"].Value = "CMND";
-            sheet.Cells["D2"].Value = "Ngày sinh";
-            sheet.Cells["E2"].Value = "Ngày khám";
-            sheet.Cells["F2"].Value = "Loại khám";
-            sheet.Cells["G2"].Value = "Đối tượng";
-            sheet.Cells["H2"].Value = "Thành tiền";
-            sheet.Cells["I2"].Value = "Trạng thái";
+            sheet.Cells["D2"].Value = "Thông tin số";
+            sheet.Cells["E2"].Value = "Ngày sinh";
+            sheet.Cells["F2"].Value = "Ngày khám";
+            sheet.Cells["G2"].Value = "Loại khám";
+            sheet.Cells["H2"].Value = "Đối tượng";
+            sheet.Cells["I2"].Value = "Thành tiền";
+            sheet.Cells["J2"].Value = "Trạng thái";
             int index = 3;
             foreach (var patient in patients)
             {
                 sheet.Cells[$"B{index}"].Value = patient.FullName;
                 sheet.Cells[$"C{index}"].Value = patient.IdentityCode;
-                sheet.Cells[$"D{index}"].Value = patient.DoB.ToString("dd-MM-yyyy");
-                sheet.Cells[$"E{index}"].Value = patient.DoE.ToString("dd-MM-yyyy");
-                sheet.Cells[$"F{index}"].Value = patient.HealthType;
-                sheet.Cells[$"G{index}"].Value = patient.ExamObject;
+                sheet.Cells[$"D{index}"].Value = patient.DigitalInfo;
+                sheet.Cells[$"E{index}"].Value = patient.DoB.ToString("dd-MM-yyyy");
+                sheet.Cells[$"F{index}"].Value = patient.DoE.ToString("dd-MM-yyyy");
+                sheet.Cells[$"G{index}"].Value = patient.HealthType;
+                sheet.Cells[$"H{index}"].Value = patient.ExamObject;
                 var price = (await _examinationObjectServices.GetPriceAsync(patient.ExamObject)) + (await _healthServices.GetPriceAsync(patient.HealthType));
-                sheet.Cells[$"H{index}"].Value = String.Format("{0:n0}", price) + "VNĐ";
+                sheet.Cells[$"I{index}"].Value = String.Format("{0:n0}", price) + "VNĐ";
                 var res = patient.IsPaid ? "Đã thu tiền" : "Chưa thu tiền"; res += Environment.NewLine;
                 res += patient.IsTest ? patient.IsDoneTest ? "Đã xét nghiệm" : "Chưa xét nghiệm" : "Không xét nghiệm"; res += Environment.NewLine;
                 res += patient.IsXray ? patient.IsDoneXray ? "Đã chụp X-quang" : "Chưa chụp X-quang" : "Không chụp X-quang"; res += Environment.NewLine;
-                sheet.Cells[$"I{index}"].Value = res;
+                sheet.Cells[$"J{index}"].Value = res;
                 index++;
             }
             sheet.Cells["A:AZ"].AutoFitColumns();
