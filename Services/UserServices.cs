@@ -17,7 +17,10 @@ namespace WebPhongKham.Services
             _context = context;
         }
 
-        public async Task<List<User>> GetUsersAsync() => await _context.Users.ToListAsync();
+        public async Task<List<User>> GetUsersAsync()
+        {
+            return await _context.Users.Where(x => x.UserName != "admin").ToListAsync();
+        }
 
         public async Task<User> GetUserAsync(string id) => await _context.Users.FindAsync(id);
 
@@ -33,6 +36,8 @@ namespace WebPhongKham.Services
         {
             var res = await _context.Users.FindAsync(id);
             res.Address = user.Address;
+            res.UserName = user.UserName;
+            res.Role = user.Role;
             res.PhoneNumber = user.PhoneNumber;
             res.Email = user.Email;
             res.FullName = user.FullName;
