@@ -164,6 +164,7 @@ namespace WebPhongKham.Controllers
             sheet.Cells["I2"].Value = "Thành tiền";
             sheet.Cells["J2"].Value = "Trạng thái";
             int index = 3;
+            float totalPrice = 0;
             foreach (var patient in patients)
             {
                 sheet.Cells[$"B{index}"].Value = patient.FullName;
@@ -174,13 +175,16 @@ namespace WebPhongKham.Controllers
                 sheet.Cells[$"G{index}"].Value = patient.HealthType;
                 sheet.Cells[$"H{index}"].Value = patient.ExamObject;
                 var price = (await _examinationObjectServices.GetPriceAsync(patient.ExamObject)) + (await _healthServices.GetPriceAsync(patient.HealthType));
-                sheet.Cells[$"I{index}"].Value = String.Format("{0:n0}", price) + "VNĐ";
+                sheet.Cells[$"I{index}"].Value = String.Format("{0:n0}", price) + " VNĐ";
                 var res = patient.IsPaid ? "Đã thu tiền" : "Chưa thu tiền"; res += Environment.NewLine;
                 res += patient.IsTest ? patient.IsDoneTest ? "Đã xét nghiệm" : "Chưa xét nghiệm" : "Không xét nghiệm"; res += Environment.NewLine;
                 res += patient.IsXray ? patient.IsDoneXray ? "Đã chụp X-quang" : "Chưa chụp X-quang" : "Không chụp X-quang"; res += Environment.NewLine;
                 sheet.Cells[$"J{index}"].Value = res;
+                sheet.Row(index).CustomHeight = true; sheet.Row(index).Height = 30;
                 index++;
             }
+            sheet.Cells[$"I{index}"].Value = "Tổng tiền: " + String.Format("{0:n0}", totalPrice) + " VNĐ";
+            
             sheet.Cells["A:AZ"].AutoFitColumns();
             //var response = HttpContext.Current.Response;
             Response.Clear();
