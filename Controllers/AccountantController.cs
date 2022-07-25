@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using WebPhongKham.Models.Entity;
 using WebPhongKham.Services;
 
 namespace WebPhongKham.Controllers
@@ -9,12 +10,15 @@ namespace WebPhongKham.Controllers
         private readonly PatientServices _patientServices;
         private readonly HealthTypeServices _healthServices;
         private readonly ExaminationObjectServices _examinationObjectServices;
+        private readonly PriceServices _priceServices;
 
-        public AccountantController(PatientServices patientServices, HealthTypeServices healthTypeServices, ExaminationObjectServices examinationObjectServices)
+        public AccountantController(PatientServices patientServices, HealthTypeServices healthTypeServices, 
+            ExaminationObjectServices examinationObjectServices, PriceServices priceServices)
         {
             _patientServices = patientServices;
             _healthServices = healthTypeServices;
             _examinationObjectServices = examinationObjectServices;
+            _priceServices = priceServices;
         }
         public async Task<IActionResult> Index(string searchName, string searchType, string searchObject, DateTime searchStart,
             DateTime searchEnd, int pageIndex = 1, int pageSize = 5)
@@ -63,28 +67,39 @@ namespace WebPhongKham.Controllers
             return RedirectToAction("Index");
         }
         [HttpGet]
-        public async Task<IActionResult> ManageEOPrice()
+        public async Task<IActionResult> ManagePrice()
         {
-            var examObjects = await _examinationObjectServices.GetExamObjectsAsync();
-            return View(examObjects);
+            var prices = await _priceServices.GetTablePricesAsync();
+            return View(prices);
         }
         [HttpPost]
-        public async Task<IActionResult> ManageEOPrice(string id, float price)
+        public async Task<IActionResult> ManagePrice(string name, int price)
         {
-            await _examinationObjectServices.UpdatePriceAsync(id, price);
-            return RedirectToAction("ManageEOPrice");
+            var tablePrice = new TablePrice()
+            {
+                Name = name,
+                Price = price
+            };
+            await _priceServices.CreateAsync(tablePrice);
+            return RedirectToAction("ManagePrice");
+        }
+        public async Task<IActionResult> EditPrice(int id, string name, int price)
+        {
+            await _priceServices.EditAsync(id, price, name);
+            return RedirectToAction("ManagePrice");
         }
         [HttpGet]
-        public async Task<IActionResult> ManageHTPrice()
+        public async Task<JsonResult> DetailsJson(int id)
         {
-            var healths = await _healthServices.GetHealthTypesAsync();
-            return View(healths);
-        }
-        [HttpPost]
-        public async Task<IActionResult> ManageHTPrice(string id, float price)
-        {
-            await _healthServices.UpdatePriceAsync(id, price);
-            return RedirectToAction("ManageHTPrice");
+            var exam = await _priceServices.GetPriceAsync(id);
+            var result = new
+            {
+                id = exam.Id,
+                name = exam.Name,
+                price = exam.Price
+            };
+            return Json(result);
         }
     }
+    
 }

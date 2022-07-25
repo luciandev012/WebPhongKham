@@ -36,12 +36,12 @@ namespace WebPhongKham.Services
             };
             return pagedResult;
         }
-        public async Task<PagedResult<Patient>> GetPaidAndTestPatientsAsync(int pageIndex, int pageSize, string name, string type, string obj, DateTime start, DateTime end)
+        public async Task<PagedResult<Patient>> GetPaidAndTestPatientsAsync(int pageIndex, int pageSize, string name, string type, string obj, DateTime start, DateTime end, bool doneTest)
         {
             var res = await _context.Patients.Where(x => x.FullName.ToLower().Contains(name)
                                                         && x.HealthType.ToLower().Contains(type)
                                                         && x.ExamObject.ToLower().Contains(obj)
-                                                        && x.IsPaid && x.IsTest).OrderByDescending(x => x.DoE).ToListAsync();
+                                                        && x.IsPaid && x.IsTest && x.IsDoneTest == doneTest).OrderByDescending(x => x.DoE).ToListAsync();
             var patients = from p in res
                            where p.DoE.CompareTo(start) != -1 && p.DoE.CompareTo(end) != 1
                            select p;
@@ -56,12 +56,12 @@ namespace WebPhongKham.Services
             };
             return pagedResult;
         }
-        public async Task<PagedResult<Patient>> GetPaidAndXrayPatientsAsync(int pageIndex, int pageSize, string name, string type, string obj, DateTime start, DateTime end)
+        public async Task<PagedResult<Patient>> GetPaidAndXrayPatientsAsync(int pageIndex, int pageSize, string name, string type, string obj, DateTime start, DateTime end, bool doneXray)
         {
             var res = await _context.Patients.Where(x => x.FullName.ToLower().Contains(name)
                                                         && x.HealthType.ToLower().Contains(type)
                                                         && x.ExamObject.ToLower().Contains(obj)
-                                                        && x.IsPaid && x.IsXray).OrderByDescending(x => x.DoE).ToListAsync();
+                                                        && x.IsPaid && x.IsXray && x.IsDoneXray == doneXray).OrderByDescending(x => x.DoE).ToListAsync();
             var patients = from p in res
                            where p.DoE.CompareTo(start) != -1 && p.DoE.CompareTo(end) != 1
                            select p;
@@ -136,19 +136,19 @@ namespace WebPhongKham.Services
                            select p;
             return patients.ToList();
         }
-        public async Task<List<Patient>> GetPatientsTestForExportAsync(string exam, string type, DateTime start, DateTime end)
+        public async Task<List<Patient>> GetPatientsTestForExportAsync(string exam, string type, DateTime start, DateTime end, bool doneTest)
         {
             var res = await _context.Patients.Where(x => x.HealthType.ToLower().Contains(type)
-                                                        && x.ExamObject.ToLower().Contains(exam) && x.IsPaid && x.IsTest).OrderByDescending(x => x.DoE).ToListAsync();
+                                                        && x.ExamObject.ToLower().Contains(exam) && x.IsPaid && x.IsTest && x.IsDoneTest == doneTest).OrderByDescending(x => x.DoE).ToListAsync();
             var patients = from p in res
                            where p.DoE.CompareTo(start) != -1 && p.DoE.CompareTo(end) != 1
                            select p;
             return patients.ToList();
         }
-        public async Task<List<Patient>> GetPatientsXrayForExportAsync(string exam, string type, DateTime start, DateTime end)
+        public async Task<List<Patient>> GetPatientsXrayForExportAsync(string exam, string type, DateTime start, DateTime end, bool doneXray)
         {
             var res = await _context.Patients.Where(x => x.HealthType.ToLower().Contains(type)
-                                                        && x.ExamObject.ToLower().Contains(exam) && x.IsPaid && x.IsXray).OrderByDescending(x => x.DoE).ToListAsync();
+                                                        && x.ExamObject.ToLower().Contains(exam) && x.IsPaid && x.IsXray && x.IsDoneXray == doneXray).OrderByDescending(x => x.DoE).ToListAsync();
             var patients = from p in res
                            where p.DoE.CompareTo(start) != -1 && p.DoE.CompareTo(end) != 1
                            select p;

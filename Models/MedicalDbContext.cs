@@ -13,6 +13,7 @@ namespace WebPhongKham.Models
         public DbSet<Patient> Patients { get; set; }
         public DbSet<HealthType> HealthTypes { get; set; }
         public DbSet<ExaminationObject> ExaminationObjects { get; set; }
+        public DbSet<TablePrice> TablePrices { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var configuration = new ConfigurationBuilder()
@@ -29,6 +30,7 @@ namespace WebPhongKham.Models
             builder.Entity<Patient>().HasKey(p => p.Id);
             builder.Entity<HealthType>().HasKey(h => h.Id);
             builder.Entity<ExaminationObject>().HasKey(e => e.Id);
+            builder.Entity<TablePrice>().HasKey(e => e.Id);
             base.OnModelCreating(builder);
         }
 

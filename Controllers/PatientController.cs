@@ -15,12 +15,15 @@ namespace WebPhongKham.Controllers
         private readonly PatientServices _patientServices;
         private readonly HealthTypeServices _healthServices;
         private readonly ExaminationObjectServices _examinationObjectServices;
+        private readonly PriceServices _priceServices;
 
-        public PatientController(PatientServices patientServices, HealthTypeServices healthTypeServices, ExaminationObjectServices examinationObjectServices)
+        public PatientController(PatientServices patientServices, HealthTypeServices healthTypeServices, 
+            ExaminationObjectServices examinationObjectServices, PriceServices priceServices)
         {
             _patientServices = patientServices;
             _healthServices = healthTypeServices;
             _examinationObjectServices = examinationObjectServices;
+            _priceServices = priceServices;
         }
 
         public async Task<IActionResult> Index(string searchName, string searchType, string searchObject, DateTime searchStart,
@@ -53,6 +56,12 @@ namespace WebPhongKham.Controllers
                 start = searchStart,
                 end = searchEnd
             };
+            var tablePrices = await _priceServices.GetTablePricesAsync();
+            ViewBag.TablePrices = tablePrices.Select(x => new SelectListItem()
+            {
+                Value = x.Price.ToString(),
+                Text = x.Name
+            });
             ViewBag.PrevKeyword = searchName;
             return View(patients);
         }
@@ -70,8 +79,6 @@ namespace WebPhongKham.Controllers
         public async Task<IActionResult> Details(string id)
         {
             var patient = await _patientServices.GetPatientAsync(id);
-            var price = (await _examinationObjectServices.GetPriceAsync(patient.ExamObject)) + (await _healthServices.GetPriceAsync(patient.HealthType));
-            ViewBag.Price = price;
             return View(patient);
         }
 
@@ -174,8 +181,7 @@ namespace WebPhongKham.Controllers
                 sheet.Cells[$"F{index}"].Value = patient.DoE.ToString("dd-MM-yyyy");
                 sheet.Cells[$"G{index}"].Value = patient.HealthType;
                 sheet.Cells[$"H{index}"].Value = patient.ExamObject;
-                var price = (await _examinationObjectServices.GetPriceAsync(patient.ExamObject)) + (await _healthServices.GetPriceAsync(patient.HealthType));
-                sheet.Cells[$"I{index}"].Value = String.Format("{0:n0}", price) + " VNĐ";
+                sheet.Cells[$"I{index}"].Value = String.Format("{0:n0}", patient.Total) + " VNĐ"; totalPrice += patient.Total;
                 var res = patient.IsPaid ? "Đã thu tiền" : "Chưa thu tiền"; res += Environment.NewLine;
                 res += patient.IsTest ? patient.IsDoneTest ? "Đã xét nghiệm" : "Chưa xét nghiệm" : "Không xét nghiệm"; res += Environment.NewLine;
                 res += patient.IsXray ? patient.IsDoneXray ? "Đã chụp X-quang" : "Chưa chụp X-quang" : "Không chụp X-quang"; res += Environment.NewLine;

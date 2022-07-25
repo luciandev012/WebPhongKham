@@ -64,6 +64,10 @@
                             <option value="">--Chọn loại đối tượng--</option>
                         </select>
                     </div>
+                     <div class="col-md-3">
+                         <input id="doneXray" name="doneXray" type="checkbox"/>
+                        <label for="doneXray" class="form-label">Đã chụp X-quang</label>     
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
@@ -210,7 +214,12 @@
              let type = $("#searchType").val();
              let start = $("#searchStart").val();
              let end = $("#searchEnd").val();
-                window.location.href = "/Xray/ExportExcel/?exam="+exam+"&type="+type+"&start="+start+"&end="+end+"";
+             let doneXray = $("#doneXray").val();
+                window.location.href = "/Xray/ExportExcel/?exam="+exam+"&type="+type+"&start="+start+"&end="+end+"&doneXray="+doneXray+"";
+            });
+            $('#doneXray').val($(this).is(':checked'));
+            $('#doneXray').click(function() {
+                $('#doneXray').val($(this).is(':checked'));
             });
         });
     </script>

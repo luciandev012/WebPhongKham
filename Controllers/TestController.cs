@@ -17,7 +17,7 @@ namespace WebPhongKham.Controllers
             _healthServices = healthTypeServices;
             _examinationObjectServices = examinationObjectServices;
         }
-        public async Task<IActionResult> Index(string searchName, string searchType, string searchObject, DateTime searchStart,
+        public async Task<IActionResult> Index(string searchName, string searchType, string searchObject, DateTime searchStart, bool doneTest,
             DateTime searchEnd, int pageIndex = 1, int pageSize = 5)
         {
             searchName = searchName ?? ""; //check null value: if null value = "", else value = value
@@ -26,7 +26,7 @@ namespace WebPhongKham.Controllers
             var validateTime = new DateTime(2020, 1, 1);
             searchStart = searchStart < validateTime ? validateTime : searchStart;
             searchEnd = searchEnd < validateTime ? new DateTime(2025, 1, 1) : searchEnd;
-            var patients = await _patientServices.GetPaidAndTestPatientsAsync(pageIndex, pageSize, searchName, searchType, searchObject, searchStart, searchEnd);
+            var patients = await _patientServices.GetPaidAndTestPatientsAsync(pageIndex, pageSize, searchName, searchType, searchObject, searchStart, searchEnd, doneTest);
             var healthTypes = await _healthServices.GetHealthTypesAsync();
             ViewBag.HealthTypes = healthTypes.Select(x => new SelectListItem()
             {
@@ -55,12 +55,12 @@ namespace WebPhongKham.Controllers
             await _patientServices.ChangeTestStatus(id);
             return RedirectToAction("Index");
         }
-        public async Task ExportExcel(string exam, string type, DateTime start, DateTime end)
+        public async Task ExportExcel(string exam, string type, DateTime start, DateTime end, bool doneTest)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             exam = exam ?? "";
             type = type ?? "";
-            var patients = await _patientServices.GetPatientsTestForExportAsync(exam, type, start, end);
+            var patients = await _patientServices.GetPatientsTestForExportAsync(exam, type, start, end, doneTest);
             ExcelPackage ep = new ExcelPackage();
             ExcelWorksheet sheet = ep.Workbook.Worksheets.Add("Report");
             sheet.Cells["B2"].Value = "Họ tên";
@@ -83,8 +83,7 @@ namespace WebPhongKham.Controllers
                 sheet.Cells[$"F{index}"].Value = patient.DoE.ToString("dd-MM-yyyy");
                 sheet.Cells[$"G{index}"].Value = patient.HealthType;
                 sheet.Cells[$"H{index}"].Value = patient.ExamObject;
-                var price = (await _examinationObjectServices.GetPriceAsync(patient.ExamObject)) + (await _healthServices.GetPriceAsync(patient.HealthType));
-                sheet.Cells[$"I{index}"].Value = String.Format("{0:n0}", price) + " VNĐ"; totalPrice += price;
+                sheet.Cells[$"I{index}"].Value = String.Format("{0:n0}", patient.Total) + " VNĐ"; totalPrice += patient.Total;
                 var res = patient.IsPaid ? "Đã thu tiền" : "Chưa thu tiền"; res += Environment.NewLine;
                 res += patient.IsTest ? patient.IsDoneTest ? "Đã xét nghiệm" : "Chưa xét nghiệm" : "Không xét nghiệm"; res += Environment.NewLine;
                 res += patient.IsXray ? patient.IsDoneXray ? "Đã chụp X-quang" : "Chưa chụp X-quang" : "Không chụp X-quang"; res += Environment.NewLine;

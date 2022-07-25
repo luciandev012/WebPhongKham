@@ -64,6 +64,10 @@
                             <option value="">--Chọn loại đối tượng--</option>
                         </select>
                     </div>
+                     <div class="col-md-3">
+                         <input id="doneTest" name="doneTest" type="checkbox"/>
+                        <label for="doneTest" class="form-label">Đã xét nghiệm</label>     
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
@@ -210,7 +214,12 @@
              let type = $("#searchType").val();
              let start = $("#searchStart").val();
              let end = $("#searchEnd").val();
-                window.location.href = "/Test/ExportExcel/?exam="+exam+"&type="+type+"&start="+start+"&end="+end+"";
+             let doneTest = $("#doneTest").val();
+                window.location.href = "/Test/ExportExcel/?exam="+exam+"&type="+type+"&start="+start+"&end="+end+"&doneTest="+doneTest+"";
+            });
+            $('#doneTest').val($(this).is(':checked'));
+            $('#doneTest').click(function() {
+                $('#doneTest').val($(this).is(':checked'));
             });
         });
     </script>

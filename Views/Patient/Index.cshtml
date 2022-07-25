@@ -149,6 +149,14 @@
                                     <label class="form-check-label" style="margin-left: 5px;" for="isTest">Có xét nghiệm</label>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="total" class="form-label">Loại giá tiền</label>
+                                    <select name="total" asp-items="@ViewBag.TablePrices" class="form-control">
+                                        <option>--Chọn loại giá--</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Thêm bệnh nhân</button>
                             </div>

@@ -18,6 +18,7 @@ builder.Services.AddTransient<UserServices>();
 builder.Services.AddTransient<HealthTypeServices>();
 builder.Services.AddTransient<ExaminationObjectServices>();
 builder.Services.AddTransient<PatientServices>();
+builder.Services.AddTransient<PriceServices>();
 
 var app = builder.Build();
 

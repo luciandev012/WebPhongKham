@@ -1,0 +1,124 @@
+﻿@using WebPhongKham.Models.Entity
+@{
+    ViewData["Title"] = "Danh sách đối tượng khám";
+}
+@model List<TablePrice>
+
+
+<article class="content dashboard-page">
+    <section class="section">
+        <!-- Second Modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Thêm giá
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Thêm loại giá</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <form asp-controller="Accountant" asp-action="ManagePrice" id="formCreate" method="post">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="name" class="form-label">Tên giá</label>
+                                    <input id="name" name="name" type="text" required class="form-control" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="price" class="form-label">Giá tiền</label>
+                                    <input id="price" name="price" type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Thêm loại giá</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel2">Thêm loại giá</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formEdit" method="post">
+                           <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="name" class="form-label">Tên giá</label>
+                                    <input id="nameEdit" name="name" type="text" required class="form-control" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="price" class="form-label">Giá tiền</label>
+                                    <input id="priceEdit" name="price" type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top: 10px">
+                                <button type="submit" class="btn btn-primary">Lưu giá</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Tên loại giá</th>
+                    <th scope="col">Giá</th>
+                    <th scope="col">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@(String.Format("{0:n0}", item.Price)) VNĐ</td>
+                        <td><button data-id="@item.Id" type="button" id="btnEdit" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" class="btn btn-secondary btn-edit"><i data-id="@item.Id" class="fa-solid fa-pen-to-square"></i> Sửa giá</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div>
+        </div>
+    </section>
+
+</article>
+@section scripts {
+    <script>
+        $(document).ready(() => {
+            $(".btn-edit").click((element) => {
+                let id = $(element.target).attr("data-id");
+                let path = "/Accountant/DetailsJson/" + id;
+                $.ajax({
+                    type: "GET",
+                    url: path,
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    success: (response) => {
+                        $("#priceEdit").val(response.price);
+                        $("#nameEdit").val(response.name);
+                        $("#formEdit").attr("action", "/Accountant/EditPrice/" + id);
+
+                    },
+                    failure: function(response) {
+                        alert("Fail" + response.responseText);
+                    },
+                    error: function(response) {
+                        alert("Error" + response.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -8,97 +8,93 @@ build_property.PlatformNeutralAssembly =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = WebPhongKham
 build_property.RootNamespace = WebPhongKham
-build_property.ProjectDir = D:\WebPhongKham\
+build_property.ProjectDir = D:\TaiLieuHocTap\DotNetCore\WebPhongKham\
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\WebPhongKham
+build_property.MSBuildProjectDirectory = D:\TaiLieuHocTap\DotNetCore\WebPhongKham
 build_property._RazorSourceGeneratorDebug = 
 
-[D:/WebPhongKham/Views/Accountant/Index.cshtml]
+[D:/TaiLieuHocTap/DotNetCore/WebPhongKham/Views/Accountant/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudGFudFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/WebPhongKham/Views/Accountant/ManageEOPrice.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudGFudFxNYW5hZ2VFT1ByaWNlLmNzaHRtbA==
+[D:/TaiLieuHocTap/DotNetCore/WebPhongKham/Views/Accountant/ManagePrice.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudGFudFxNYW5hZ2VQcmljZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/WebPhongKham/Views/Accountant/ManageHTPrice.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudGFudFxNYW5hZ2VIVFByaWNlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/WebPhongKham/Views/Examination/Index.cshtml]
+[D:/TaiLieuHocTap/DotNetCore/WebPhongKham/Views/Examination/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXhhbWluYXRpb25cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/WebPhongKham/Views/HealthType/Index.cshtml]
+[D:/TaiLieuHocTap/DotNetCore/WebPhongKham/Views/HealthType/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSGVhbHRoVHlwZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/WebPhongKham/Views/Home/Create.cshtml]
+[D:/TaiLieuHocTap/DotNetCore/WebPhongKham/Views/Home/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/WebPhongKham/Views/Home/Edit.cshtml]
+[D:/TaiLieuHocTap/DotNetCore/WebPhongKham/Views/Home/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/WebPhongKham/Views/Home/Index.cshtml]
+[D:/TaiLieuHocTap/DotNetCore/WebPhongKham/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/WebPhongKham/Views/Patient/Details.cshtml]
+[D:/TaiLieuHocTap/DotNetCore/WebPhongKham/Views/Patient/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF0aWVudFxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/WebPhongKham/Views/Patient/Index.cshtml]
+[D:/TaiLieuHocTap/DotNetCore/WebPhongKham/Views/Patient/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF0aWVudFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/WebPhongKham/Views/Shared/Components/Menu/Default.cshtml]
+[D:/TaiLieuHocTap/DotNetCore/WebPhongKham/Views/Shared/Components/Menu/Default.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcTWVudVxEZWZhdWx0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/WebPhongKham/Views/Shared/Components/Paging/Default.cshtml]
+[D:/TaiLieuHocTap/DotNetCore/WebPhongKham/Views/Shared/Components/Paging/Default.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcUGFnaW5nXERlZmF1bHQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/WebPhongKham/Views/Shared/Components/UserInfo/Default.cshtml]
+[D:/TaiLieuHocTap/DotNetCore/WebPhongKham/Views/Shared/Components/UserInfo/Default.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcVXNlckluZm9cRGVmYXVsdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/WebPhongKham/Views/Shared/Error.cshtml]
+[D:/TaiLieuHocTap/DotNetCore/WebPhongKham/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/WebPhongKham/Views/Shared/_ValidationScriptsPartial.cshtml]
+[D:/TaiLieuHocTap/DotNetCore/WebPhongKham/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/WebPhongKham/Views/Test/Index.cshtml]
+[D:/TaiLieuHocTap/DotNetCore/WebPhongKham/Views/Test/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVzdFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/WebPhongKham/Views/User/ChangePass.cshtml]
+[D:/TaiLieuHocTap/DotNetCore/WebPhongKham/Views/User/ChangePass.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxDaGFuZ2VQYXNzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/WebPhongKham/Views/User/Index.cshtml]
+[D:/TaiLieuHocTap/DotNetCore/WebPhongKham/Views/User/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/WebPhongKham/Views/Xray/Index.cshtml]
+[D:/TaiLieuHocTap/DotNetCore/WebPhongKham/Views/Xray/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcWHJheVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/WebPhongKham/Views/_ViewImports.cshtml]
+[D:/TaiLieuHocTap/DotNetCore/WebPhongKham/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/WebPhongKham/Views/_ViewStart.cshtml]
+[D:/TaiLieuHocTap/DotNetCore/WebPhongKham/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/WebPhongKham/Views/Shared/_Layout.cshtml]
+[D:/TaiLieuHocTap/DotNetCore/WebPhongKham/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-69o7lp3nh0
