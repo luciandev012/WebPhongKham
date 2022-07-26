@@ -84,6 +84,32 @@
                 </div>
             </form>
         </div>
+        <!-- Second Modal -->
+        <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel2">Sửa kết quả</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formEdit" method="post">
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="result" class="form-label">Kết quả</label>
+                                    <input id="result" name="result" type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Lưu kết quả</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
         <table class="rounded-lg bg-white divide-y divide-gray-300 overflow-hidden" style="width: 100%; border-radius: 10px; overflow: scroll">
             <thead class="bg-gray-900" style="background-color: #413F42">
                 <tr>
@@ -114,7 +140,11 @@
                             {
                                 <button data-id="@item.Id" class="btn btn-secondary btn-test"><i class="fa-solid fa-xmark" style="color: red;"></i> Chưa chụp X-quang</button>
                             }
+                            <button data-id="@item.Id" data="@item.Result" type="button" id="btnEdit" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" class="btn btn-secondary btn-edit">
+                                <i data-id="@item.Id" data="@item.Result" class="fa-solid fa-pen-to-square"></i> Sửa kết quả
+                            </button>
                         </td>
+
                     </tr>
                 }
             </tbody>
@@ -220,6 +250,13 @@
             $('#doneXray').val($(this).is(':checked'));
             $('#doneXray').click(function() {
                 $('#doneXray').val($(this).is(':checked'));
+            });
+            $(".btn-edit").click((element) => {
+                let data = $(element.currentTarget).attr("data");
+                let id = $(element.currentTarget).attr("data-id");
+                $("#result").val(data);
+                $("#formEdit").attr("action", "/Xray/EditResult/" + id);
+                
             });
         });
     </script>

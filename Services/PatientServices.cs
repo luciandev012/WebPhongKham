@@ -154,5 +154,11 @@ namespace WebPhongKham.Services
                            select p;
             return patients.ToList();
         }
+        public async Task UpdateResultAsync(string id, string result)
+        {
+            var res = await _context.Patients.FindAsync(id);
+            res.Result = result;
+            await _context.SaveChangesAsync();
+        }
     }
 }

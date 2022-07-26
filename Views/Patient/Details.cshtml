@@ -38,6 +38,7 @@
                             <th>Loại khám</th>
                             <th>Đối tượng khám</th>
                             <th>Thành tiền</th>
+                            <th>Kết quả</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -47,6 +48,7 @@
                             <td>@Model.HealthType</td>
                             <td>@Model.ExamObject</td>
                             <td>@(String.Format("{0:n0}", Model.Total)) VNĐ</td>
+                            <td>@(Model.Result == null? "" : Model.Result)</td>
                             <td>
                                 <span class="d-block">
                                     @(Model.IsPaid ? "Đã thu tiền" : "Chưa thu tiền")

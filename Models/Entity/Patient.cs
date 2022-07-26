@@ -28,5 +28,6 @@ namespace WebPhongKham.Models.Entity
         public bool IsDoneTest { get; set; } = false;
         public bool IsDoneXray { get; set; } = false;
         public int Total { get; set; }
+        public string Result { get; set; }
     }
 }

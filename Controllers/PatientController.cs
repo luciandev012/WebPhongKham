@@ -71,6 +71,7 @@ namespace WebPhongKham.Controllers
         {
             patient.DoB = DateTime.SpecifyKind(patient.DoB, DateTimeKind.Utc);
             patient.DoE = DateTime.SpecifyKind(patient.DoE, DateTimeKind.Utc);
+            patient.Result = "";
             await _patientServices.CreateAsync(patient);
             return RedirectToAction("Index");
         }
@@ -170,6 +171,7 @@ namespace WebPhongKham.Controllers
             sheet.Cells["H2"].Value = "Đối tượng";
             sheet.Cells["I2"].Value = "Thành tiền";
             sheet.Cells["J2"].Value = "Trạng thái";
+            sheet.Cells["K2"].Value = "Kết quả";
             int index = 3;
             float totalPrice = 0;
             foreach (var patient in patients)
@@ -186,6 +188,7 @@ namespace WebPhongKham.Controllers
                 res += patient.IsTest ? patient.IsDoneTest ? "Đã xét nghiệm" : "Chưa xét nghiệm" : "Không xét nghiệm"; res += Environment.NewLine;
                 res += patient.IsXray ? patient.IsDoneXray ? "Đã chụp X-quang" : "Chưa chụp X-quang" : "Không chụp X-quang"; res += Environment.NewLine;
                 sheet.Cells[$"J{index}"].Value = res;
+                sheet.Cells[$"K{index}"].Value = patient.Result;
                 sheet.Row(index).CustomHeight = true; sheet.Row(index).Height = 30;
                 index++;
             }
