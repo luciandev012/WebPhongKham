@@ -6,18 +6,18 @@
     @if (Model.Role == "admin")
     {
         <li>
-            <a asp-controller="HealthType">
+            <a asp-controller="HealthType" asp-action="Index">
                 <i class="fa-solid fa-kit-medical"></i> Sức khỏe
             </a>
         </li>
         <li class="active">
-            <a asp-controller="Home">
+            <a asp-controller="Home" asp-action="Index">
                 <i class="fa-solid fa-user"></i> Tài Khoản
             </a>
         </li>
 
         <li>
-            <a asp-controller="Examination">
+            <a asp-controller="Examination" asp-action="Index">
                 <i class="fas fa-sliders-h"></i> Quản lý
             </a>
         </li>
