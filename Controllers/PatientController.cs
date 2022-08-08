@@ -72,6 +72,7 @@ namespace WebPhongKham.Controllers
             patient.DoB = DateTime.SpecifyKind(patient.DoB, DateTimeKind.Utc);
             patient.DoE = DateTime.SpecifyKind(patient.DoE, DateTimeKind.Utc);
             patient.Result = "";
+            patient.IdentityCode = "";
             await _patientServices.CreateAsync(patient);
             return RedirectToAction("Index");
         }

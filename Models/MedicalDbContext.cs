@@ -31,6 +31,11 @@ namespace WebPhongKham.Models
             builder.Entity<HealthType>().HasKey(h => h.Id);
             builder.Entity<ExaminationObject>().HasKey(e => e.Id);
             builder.Entity<TablePrice>().HasKey(e => e.Id);
+            builder.Entity<User>().HasData(new User
+            {
+                FullName = "Admin", UserName = "admin", Password = "$2a$10$SXnrntO1/dUB/ysxj80vG.wMv6E6X8fNfPfHSNu8w2ZsBtiGINd0y",
+                Address = "Hà Nội", Email = "admin@gmail.com", PhoneNumber = "0123456789", Role = "admin", Status = true, Id = Guid.NewGuid().ToString()
+            });
             base.OnModelCreating(builder);
         }
 

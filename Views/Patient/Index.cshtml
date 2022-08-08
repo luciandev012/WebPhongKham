@@ -38,7 +38,8 @@
         color: red;
         font-weight: normal;
     }
-    .tx-w{
+
+    .tx-w {
         color: white;
     }
 </style>
@@ -51,8 +52,6 @@
         </button>
         <button class="btn btn-primary" id="btn-refresh" type="button">Làm mới</button>
         <a class="btn btn-primary" id="btn-search"><i class="fa-solid fa-magnifying-glass" style="color: white"></i></a>
-        <input type="checkbox" name="checkShowToday" id="showToday" />
-        <label for="checkShowToday">Hiển thị bệnh nhân ngày hôm nay</label>
         <button type="button" class="btn btn-primary" id="btnExcel">Xuất file excel</button>
         <div class="mb-3" id="searchForm" style="display: none">
             <form id="form_search" asp-controller="Patient" autocomplete="off">
@@ -83,6 +82,10 @@
                         <label for="searchEnd" class="form-label">Đến ngày</label>
                         <input id="searchEnd" name="searchEnd" type="date" data-date="" data-date-format="DD/MM/YYYY" value="2024-01-01" class="form-control date" />
                     </div>
+                    <div class="col-md-3">
+                        <input type="checkbox" name="checkShowToday" id="showToday" />
+                        <label for="checkShowToday">Hiển thị bệnh nhân ngày hôm nay</label>
+                    </div>
                     <div class="col-md-3" style="padding-top: 30px">
                         <button class="btn btn-success" type="submit" id="search">Tìm kiếm</button>
                     </div>
@@ -104,27 +107,17 @@
                                     <label for="fullName" class="form-label">Họ tên</label>
                                     <input id="fullName" name="fullName" type="text" required class="form-control" />
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label for="doe" class="form-label">Ngày khám</label>
-                                    <input id="doe" name="doe" type="date" data-date="" data-date-format="DD/MM/YYYY" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control date" />
+                                 <div class="form-group col-md-6">
+                                    <label for="digitalInfo" class="form-label">Thông tin số</label>
+                                    <input id="digitalInfo" name="digitalInfo" type="text" class="form-control" />
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label for="identityCode" class="form-label">CMND</label>
-                                    <input id="identityCode" name="identityCode" type="text" required class="form-control" />
-                                </div>
                                 <div class="form-group col-md-6">
                                     <label for="healthType" class="form-label">Loại sức khỏe khám</label>
                                     <select name="healthType" asp-items="@ViewBag.HealthTypes" class="form-control">
                                         <option>--Chọn loại sức khỏe--</option>
                                     </select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label for="dob" class="form-label">Ngày sinh</label>
-                                    <input id="dob" name="dob" value="1990-01-01" type="date" data-date="" data-date-format="DD/MM/YYYY" class="form-control date" />
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="healthType" class="form-label">Loại sức khỏe</label>
@@ -135,8 +128,12 @@
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-6">
-                                    <label for="digitalInfo" class="form-label">Thông tin số</label>
-                                    <input id="digitalInfo" name="digitalInfo" type="text" class="form-control" />
+                                    <label for="dob" class="form-label">Ngày sinh</label>
+                                    <input id="dob" name="dob" value="1990-01-01" type="date" data-date="" data-date-format="DD/MM/YYYY" class="form-control date" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="doe" class="form-label">Ngày khám</label>
+                                    <input id="doe" name="doe" type="date" data-date="" data-date-format="DD/MM/YYYY" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control date" />
                                 </div>
                             </div>
                             <div class="row">
@@ -183,26 +180,16 @@
                                     <input id="fullNameEdit" name="fullName" type="text" required class="form-control" />
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="doeEdit" class="form-label">Ngày khám</label>
-                                    <input id="doeEdit" name="doe" type="date" data-date="" data-date-format="DD/MM/YYYY" class="form-control date" />
+                                    <label for="digitalInfoEdit" class="form-label">Thông tin số</label>
+                                    <input id="digitalInfoEdit" name="digitalInfo" type="text" class="form-control" />
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label for="identityCodeEdit" class="form-label">CMND</label>
-                                    <input id="identityCodeEdit" name="identityCode" type="text" required class="form-control" />
-                                </div>
                                 <div class="form-group col-md-6">
                                     <label for="healthTypeEdit" class="form-label">Loại sức khỏe khám</label>
                                     <select name="healthType" id="healthTypeEdit" asp-items="@ViewBag.HealthTypes" class="form-control">
                                         <option value="">--Chọn loại sức khỏe--</option>
                                     </select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label for="dobEdit" class="form-label">Ngày sinh</label>
-                                    <input id="dobEdit" name="dob" type="date" data-date="" data-date-format="DD/MM/YYYY" class="form-control date" />
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="examObject" class="form-label">Loại đối tượng</label>
@@ -213,8 +200,12 @@
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-6">
-                                    <label for="digitalInfoEdit" class="form-label">Thông tin số</label>
-                                    <input id="digitalInfoEdit" name="digitalInfo" type="text" class="form-control" />
+                                    <label for="dobEdit" class="form-label">Ngày sinh</label>
+                                    <input id="dobEdit" name="dob" type="date" data-date="" data-date-format="DD/MM/YYYY" class="form-control date" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="doeEdit" class="form-label">Ngày khám</label>
+                                    <input id="doeEdit" name="doe" type="date" data-date="" data-date-format="DD/MM/YYYY" class="form-control date" />
                                 </div>
                             </div>
                             <div class="row">
@@ -358,7 +349,6 @@
                         console.log(response);
                         $("#fullNameEdit").val(response.fullName);
                         $("#doeEdit").val(response.doE).change();
-                        $("#identityCodeEdit").val(response.identityCode);
                         $("#dobEdit").val(response.doB).change();
                         if (response.isXray) {
                             $("#isXrayEdit").prop("checked", true).val(true);
@@ -443,38 +433,38 @@
             $.validator.addMethod("validateType", function(value, element) {
                 return this.optional(element) || !(value == "--Chọn loại sức khỏe--");
             }, "Bạn chưa chọn loại sức khỏe");
-            if (localStorage.getItem("isChecked") == 'true') {
-                $("#showToday").prop("checked", true);
-            } else {
-                console.log("false check");
-                $("#showToday").prop("checked", false);
+            //if (localStorage.getItem("isChecked") == 'true') {
+            //    $("#showToday").prop("checked", true);
+            //} else {
+            //    console.log("false check");
+            //    $("#showToday").prop("checked", false);
+            //}
+            let getEndDate = (st) => {
+                let minus = (st.getHours() * 3600 + st.getMinutes() * 60 + st.getSeconds()) * 1000 + st.getMilliseconds();
+                return new Date(st.getTime() - minus + 86400000);
             }
             $("#showToday").click(function() {
                 let check = $("#showToday").prop('checked');
                 console.log(check);
                 if (check) {
-                    let start = new Date(); let end = new Date(); end.setDate();
+                    let start = new Date(); let end = getEndDate(start);
                     $("#searchStart").val(formatDate(start)).change();
                     $("#searchEnd").val(formatDate(end)).change();
-                    $("#search").click();
-                    localStorage.setItem("isChecked", true);
                 }
                 else {
                     let start = new Date(2022, 1, 1); let end = new Date(2024, 1, 1);
                     $("#searchStart").val(formatDate(start)).change();
                     $("#searchEnd").val(formatDate(end)).change();
-                    $("#search").click();
-                    localStorage.setItem("isChecked", false);
                 }
-            })
-        });
-         $("#btnExcel").click((element) => {
-             let exam = $("#searchObject").val();
-             let type = $("#searchType").val();
-             let start = $("#searchStart").val();
-             let end = $("#searchEnd").val();
-                window.location.href = "/Patient/ExportExcel/?exam="+exam+"&type="+type+"&start="+start+"&end="+end+"";
             });
-    
+        });
+        $("#btnExcel").click((element) => {
+            let exam = $("#searchObject").val();
+            let type = $("#searchType").val();
+            let start = $("#searchStart").val();
+            let end = $("#searchEnd").val();
+            window.location.href = "/Patient/ExportExcel/?exam=" + exam + "&type=" + type + "&start=" + start + "&end=" + end + "";
+        });
+
     </script>
 }

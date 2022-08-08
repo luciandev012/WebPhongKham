@@ -43,8 +43,7 @@
     <section class="section">
         <button class="btn btn-primary" id="btn-refresh" type="button">Làm mới</button>
         <a class="btn btn-primary" id="btn-search"><i class="fa-solid fa-magnifying-glass"></i></a>
-        <input type="checkbox" name="checkShowToday" id="showToday" />
-        <label for="checkShowToday">Hiển thị bệnh nhân ngày hôm nay</label>
+        
         <button type="button" class="btn btn-primary" id="btnExcel">Xuất file excel</button>
         <div class="mb-3" id="searchForm" style="display: none">
             <form id="form_search" asp-controller="Test" autocomplete="off">
@@ -78,6 +77,10 @@
                     <div class="col-md-3">
                         <label for="searchEnd" class="form-label">Đến ngày</label>
                         <input id="searchEnd" name="searchEnd" type="date" data-date="" data-date-format="DD/MM/YYYY" value="2024-01-01" class="form-control date" />
+                    </div>
+                    <div class="col-md-3">
+                        <input type="checkbox" name="checkShowToday" id="showToday" />
+                        <label for="checkShowToday">Hiển thị bệnh nhân ngày hôm nay</label>
                     </div>
                     <div class="col-md-3" style="padding-top: 30px">
                         <button class="btn btn-success" type="submit" id="search">Tìm kiếm</button>
@@ -215,28 +218,28 @@
                 $("#searchStart").val(formatDate(start)).change();
                 $("#searchEnd").val(formatDate(end)).change();
             });
-            if (localStorage.getItem("isTestChecked") == 'true') {
-                $("#showToday").prop("checked", true);
-            } else {
-                console.log("false check");
-                $("#showToday").prop("checked", false);
+            //if (localStorage.getItem("isXrayChecked") == 'true') {
+            //    $("#showToday").prop("checked", true);
+            //} else {
+            //    console.log("false check");
+            //    $("#showToday").prop("checked", false);
+            //}
+            let getEndDate = (st) => {
+                let minus = (st.getHours() * 3600 + st.getMinutes() * 60 + st.getSeconds()) * 1000 + st.getMilliseconds();
+                return new Date(st.getTime() - minus + 86400000);
             }
             $("#showToday").click(function() {
                 let check = $("#showToday").prop('checked');
                 console.log(check);
                 if (check) {
-                    let start = new Date(); let end = new Date(); end.setDate();
+                    let start = new Date(); let end = getEndDate(start);
                     $("#searchStart").val(formatDate(start)).change();
                     $("#searchEnd").val(formatDate(end)).change();
-                    $("#search").click();
-                    localStorage.setItem("isTestChecked", true);
                 }
                 else {
                     let start = new Date(2022, 1, 1); let end = new Date(2024, 1, 1);
                     $("#searchStart").val(formatDate(start)).change();
                     $("#searchEnd").val(formatDate(end)).change();
-                    $("#search").click();
-                    localStorage.setItem("isTestChecked", false);
                 }
             });
             $("#btnExcel").click((element) => {
