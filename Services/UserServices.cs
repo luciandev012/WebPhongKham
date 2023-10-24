@@ -41,7 +41,6 @@ namespace WebPhongKham.Services
             res.PhoneNumber = user.PhoneNumber;
             res.Email = user.Email;
             res.FullName = user.FullName;
-            var update = "áaaaaaaa";
             await _context.SaveChangesAsync();
         }
         
